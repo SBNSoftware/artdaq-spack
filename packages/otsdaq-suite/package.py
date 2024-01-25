@@ -18,7 +18,7 @@ class OtsdaqSuite(BundlePackage):
     version("v2_06_09")
     version("v2_06_08")
     
-    squals = ("112", "117", "118", "120", "120a", "122", "123", "124", "126")
+    squals = ("112", "117", "118", "120", "120a", "122", "123", "124", "126", "128")
     variant(
         "s",
         default="0",
