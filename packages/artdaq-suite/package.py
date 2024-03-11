@@ -13,13 +13,14 @@ class ArtdaqSuite(BundlePackage):
 
     homepage="https://github.com/art-daq"
 
+    version("v3_13_00")
     version("v3_12_07")
     version("v3_12_05")
     version("v3_12_04")
     version("v3_12_03")
     version("v3_12_02")
 
-    squals = ("112", "117", "118", "120", "120a", "122", "123", "124", "126", "128")
+    squals = ("112", "117", "118", "120", "120a", "120b", "122", "123", "124", "126", "128", "130")
     variant(
         "s",
         default="0",
@@ -36,6 +37,18 @@ class ArtdaqSuite(BundlePackage):
     variant("epics", default=True, description="Install artdaq EPICS plugin")
     variant("pcp", default=True, description="Install artdaq PCP MMV plugin")
 
+    with when("@v3_13_00"):
+        depends_on("artdaq@v3_13_00")
+        depends_on("artdaq-core@v3_10_01")
+        depends_on("artdaq-utilities@v1_09_00")
+        depends_on("artdaq-mfextensions@v1_09_00")
+        depends_on("trace@v3_17_11")
+        depends_on("artdaq-daqinterface@v3_13_00")
+        depends_on("artdaq-core-demo@v1_11_00", when="+demo")
+        depends_on("artdaq-demo@v3_13_00", when="+demo")
+        depends_on("artdaq-database@v1_10_00", when="+db")
+        depends_on("artdaq-epics-plugin@v1_06_00", when="+epics")
+        depends_on("artdaq-pcp-mmv-plugin@v1_04_00", when="+pcp")
     with when("@v3_12_07"):
         depends_on("artdaq@v3_12_07")
         depends_on("artdaq-core@v3_09_15")
