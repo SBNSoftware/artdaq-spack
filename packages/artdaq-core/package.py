@@ -27,6 +27,7 @@ class ArtdaqCore(CMakePackage):
     git = "https://github.com/art-daq/artdaq_core.git"
     
 
+    version("v3_10_01", sha256="341d986974caf22fb084e6131ea46529e847ccea48cdace487c6ab463c2a6ae1")
     version("v3_09_16", sha256="07f6b6d5e26350089976b820f62bbee37a3361e94c4e4f1f8d62a276e388bb9b")
     version("v3_09_15", sha256="08404c2592292cd9e90bb3e1a0999e62d05412a2a0c949982a24ada43b900388")
     version("v3_09_13", sha256="53b952cc973d6ba1bceeeafa874e8d56758f41f6362b0244999cbb9749906051")
