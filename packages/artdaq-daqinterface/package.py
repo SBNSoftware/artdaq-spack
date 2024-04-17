@@ -35,3 +35,11 @@ class ArtdaqDaqinterface(CMakePackage):
 
     depends_on("cetmodules", type="build")
     depends_on("python@3:")
+
+    def setup_run_environment(self, env):
+        prefix = self.prefix
+        env.prepend_path("ARTDAQ_DAQINTERFACE_DIR", prefix)
+
+    def setup_dependent_run_environment(self, env, dependent_spec):
+        prefix = self.prefix
+        env.prepend_path("ARTDAQ_DAQINTERFACE_DIR", prefix)
