@@ -12,6 +12,7 @@ class OtsdaqSuite(BundlePackage):
     """The Off-The-Shelf DAQ suite, otsdaq, providing graphical wrappers for artdaq
     """
     
+    version("v2_08_01")
     version("v2_08_00")
     version("v2_07_00")
     version("v2_06_11")
@@ -19,7 +20,7 @@ class OtsdaqSuite(BundlePackage):
     version("v2_06_09")
     version("v2_06_08")
     
-    squals = ("112", "117", "118", "120", "120a", "120b", "122", "123", "124", "126", "128", "130")
+    squals = ("112", "117", "118", "120", "120a", "120b", "122", "123", "124", "126", "128", "130", "131", "132")
     variant(
         "s",
         default="0",
@@ -34,10 +35,11 @@ class OtsdaqSuite(BundlePackage):
     variant(
         "artdaq",
         default="0",
-        values = ("0","31202","31203","31204", "31205", "31207", "31300"),
+        values = ("0","31202","31203","31204", "31205", "31207", "31300", "31301"),
         multi=False,
         description="Artdaq suite version to use",
     )
+    depends_on("artdaq-suite@v3_13_01", when="artdaq=31301")
     depends_on("artdaq-suite@v3_13_00", when="artdaq=31300")
     depends_on("artdaq-suite@v3_12_07", when="artdaq=31207")
     depends_on("artdaq-suite@v3_12_05", when="artdaq=31205")
@@ -49,6 +51,13 @@ class OtsdaqSuite(BundlePackage):
     variant("demo", default=False, description="Install otsdaq-demo")
     variant("prep", default=False, description="Install PREP modernization library")
     
+    with when("@v2_08_01"):
+        depends_on("otsdaq@v2_08_01")
+        depends_on("otsdaq-utilities@v2_08_01")
+        depends_on("otsdaq-components@v2_08_01")
+        depends_on("otsdaq-epics@v2_08_01")
+        depends_on("otsdaq-demo@v2_08_01", when="+demo")
+        depends_on("otsdaq-prepmodernization@v2_08_01", when="+prep")
     with when("@v2_08_00"):
         depends_on("otsdaq@v2_08_00")
         depends_on("otsdaq-utilities@v2_08_00")
