@@ -48,3 +48,14 @@ class OtsdaqComponents(CMakePackage):
     depends_on("otsdaq")
     depends_on("otsdaq-utilities")
 
+    def cmake_args(self):
+        args = [
+            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+        ]
+        if os.path.exists("CMakePresets.cmake"):
+            args.extend(["--preset", "default"])
+        else:
+            self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
+        return args
+
+

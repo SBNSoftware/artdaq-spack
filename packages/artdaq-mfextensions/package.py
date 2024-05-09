@@ -55,8 +55,19 @@ class ArtdaqMfextensions(CMakePackage):
 
     with when('@:v1_08_07'):
         def cmake_args(self):
-            args = [ self.define('IGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES', True) ]
+            args = [ 
+            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"), self.define('IGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES', True) ]
             return args
+
+    def cmake_args(self):
+        args = [
+            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+        ]
+        if os.path.exists("CMakePresets.cmake"):
+            args.extend(["--preset", "default"])
+        else:
+            self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
+        return args
 
     def setup_run_environment(self, env):
         prefix = self.prefix
