@@ -35,10 +35,20 @@ class ArtdaqDatabase(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17", conditional("20",when="@v1_07_04:")),
+        values=("14", "17"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
+        when="@:v1_07_04"
+    )
+    variant(
+        "cxxstd",
+        default="20",
+        values=("17","20"),
+        multi=False,
+        sticky=True,
+        description="Use the specified C++ standard when building.",
+        when="@v1_07_04:"
     )
     variant("builtin_fhicl", default=True, description="Use built-in FHiCL-cpp with database fixes")
 

@@ -43,11 +43,22 @@ class ArtdaqCore(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17", conditional("20",when="@v3_09_12:")),
+        values=("14", "17"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
+        when="@:v3_09_12"            
     )
+    variant(
+        "cxxstd",
+        default="20",
+        values=("17", "20"),
+        multi=False,
+        sticky=True,
+        description="Use the specified C++ standard when building.",
+        when="@v3_09_12:"            
+    )
+        
     variant("doc", default=False, description="Build documentation with Doxygen.")
 
     # art dependencies

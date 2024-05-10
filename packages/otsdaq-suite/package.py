@@ -39,6 +39,7 @@ class OtsdaqSuite(BundlePackage):
         multi=False,
         description="Artdaq suite version to use",
     )
+    
     depends_on("artdaq-suite@v3_13_01", when="artdaq=31301")
     depends_on("artdaq-suite@v3_13_00", when="artdaq=31300")
     depends_on("artdaq-suite@v3_12_07", when="artdaq=31207")

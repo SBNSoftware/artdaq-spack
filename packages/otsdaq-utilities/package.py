@@ -37,10 +37,20 @@ class OtsdaqUtilities(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17", conditional("20",when="@v2_06_10:")),
+        values=("14", "17"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
+        when="@:v2_06_10"        
+    )
+    variant(
+        "cxxstd",
+        default="20",
+        values=("17", "20"),
+        multi=False,
+        sticky=True,
+        description="Use the specified C++ standard when building.",
+        when="@v2_06_10:"        
     )
 
     depends_on("cetmodules", type="build")

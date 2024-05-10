@@ -38,6 +38,7 @@ class ArtdaqSuite(BundlePackage):
     variant("epics", default=True, description="Install artdaq EPICS plugin")
     variant("pcp", default=True, description="Install artdaq PCP MMV plugin")
 
+
     with when("@v3_13_01"):
         depends_on("artdaq@v3_13_01")
         depends_on("artdaq-core@v3_10_03")
