@@ -59,6 +59,7 @@ class Xdaq(MakefilePackage):
     depends_on("log4cplus")
     #depends_on("xalan-c")
     depends_on("jansson")
+    depends_on("c-ares")    
 
     def patch(self):
         tirpc_include_dir = self.spec["libtirpc"].prefix.include.tirpc
