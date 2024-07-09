@@ -22,6 +22,8 @@ class OtsdaqEpics(CMakePackage):
     git = "https://github.com/art-daq/otsdaq_epics.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v2_08_02", commit="77c961a8be6114f0a374fabef458558ed849b72f")
+    version("v2_08_01", commit="01ce6cddcc7be28e79c86893b99c114cb12b142f")
     version("v2_08_00", commit="33cfc3b3dfc47e175fd0b72e42eaef56c2746828")
     version("v2_07_00", sha256="60bf90b0572ef0f20df9b7728f3274b38be46e2a49b0dbe2e1ab17b4c146d6b0")
     version("v2_06_11", sha256="7bf9253b421846992fbf23bbb9a749f80ff2c0073954803951d3f8df1dda9925")
@@ -36,10 +38,20 @@ class OtsdaqEpics(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17", conditional("20",when="@v2_06_10:")),
+        values=("14", "17"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
+        when="@:v2_06_10"        
+    )
+    variant(
+        "cxxstd",
+        default="20",
+        values=("17", "20"),
+        multi=False,
+        sticky=True,
+        description="Use the specified C++ standard when building.",
+        when="@v2_06_10:"        
     )
 
     depends_on("cetmodules", type="build")
@@ -48,5 +60,16 @@ class OtsdaqEpics(CMakePackage):
 
     depends_on("otsdaq")
     depends_on("otsdaq-utilities")
+
+    def cmake_args(self):
+        args = [
+            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+        ]
+        if os.path.exists("CMakePresets.cmake"):
+            args.extend(["--preset", "default"])
+        else:
+            self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
+        return args
+
 
 

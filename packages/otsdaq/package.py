@@ -27,6 +27,8 @@ class Otsdaq(CMakePackage):
     git = "https://github.com/art-daq/otsdaq.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v2_08_02", commit="a84bc01f80e763253184393f61303449719801e8")
+    version("v2_08_01", commit="d9d0cad63a49f0bdbc61ce7b64e28ad96b31cc9c")
     version("v2_08_00", commit="356d88a88a704cae7683686eccd251fe8e4a527f")
     version("v2_07_00", sha256="d842023ea2d8b01d39c1fe806a78017537a7bf2acf34ccff830740281b495cc8")
     version("v2_06_11", sha256="808478d4e326fbff1349d4e1ca3fefd866110554107dc935c4e6483bb7d866dd")
@@ -42,10 +44,20 @@ class Otsdaq(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17", conditional("20",when="@v2_06_10:")),
+        values=("14", "17"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
+        when="@:v2_06_10"        
+    )
+    variant(
+        "cxxstd",
+        default="20",
+        values=("17", "20"),
+        multi=False,
+        sticky=True,
+        description="Use the specified C++ standard when building.",
+        when="@v2_06_10:"        
     )
 
     depends_on("cetmodules", type="build")
@@ -54,6 +66,17 @@ class Otsdaq(CMakePackage):
     depends_on("artdaq")
     depends_on("artdaq-database~builtin_fhicl")
     depends_on("artdaq-daqinterface")
+
+    def cmake_args(self):
+        args = [
+            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+        ]
+        if os.path.exists("CMakePresets.cmake"):
+            args.extend(["--preset", "default"])
+        else:
+            self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
+        return args
+
 
     def setup_run_environment(self, env):
         prefix = self.prefix

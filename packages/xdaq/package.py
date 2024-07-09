@@ -23,11 +23,15 @@ class Xdaq(MakefilePackage):
     url = "https://gitlab.cern.ch/cmsos/core/-/archive/release_16_21_0_2/core-release_16_21_0_2.tar.gz"
     git = "https://gitlab.cern.ch/cmsos/core.git"
 
+    version("16_31_0_4", sha256="a3a9bb0a0194795b8141e32fc02ad9dedb7d572e3b82e3d909bf2380c652fcde")
+    version("16_30_0_4", sha256="6a2659357e59e6d5ebb37616efed33d86d4bb8eafe9a057ebda88dc4f65dec7d")
     version("16_29_0_3", sha256="e9100300c08fcc186b060d6f07498466245e51db0f9b61b84f00bc9472bf284a")
     version("16_28_0_3", sha256="68b11e89085d3c6abf482a1df257d3a5e29828d23d8bd4f8afdfc55daf096fe9")
     version("16_27_0_3", sha256="fbfb5a7d3b71ce9920304856036dbd71537ef17f7ea67cda8713ab64e54681df")    
     version("16_21_0_2", commit="d9864267e19543240e655e0c61a376e2e689354d", get_full_repo=True)
     version("16_26_0_3", sha256="cd425bfde654f108f6634b1a8f7f2af8549fd2386b8ea5f0e47d3d8042c9519e")
+
+    conflicts("%gcc@13.1.0")
 
     depends_on("autoconf", type="build")
     depends_on("automake", type="build")
@@ -49,12 +53,14 @@ class Xdaq(MakefilePackage):
     patch("toolbox.includes.patch")
     patch("toolbox.Makefile.patch")
     patch("toolbox.src.GNUC.patch")
+    patch("xoap.filter.src.common.patch")
 
-    #depends_on("xerces-c")
+    depends_on("xerces-c")
     depends_on("nlohmann-json")
     depends_on("log4cplus")
-    #depends_on("xalan-c")
+    depends_on("xalan-c")
     depends_on("jansson")
+    depends_on("c-ares")    
 
     def patch(self):
         tirpc_include_dir = self.spec["libtirpc"].prefix.include.tirpc
@@ -67,8 +73,8 @@ class Xdaq(MakefilePackage):
 
 
     def build(self, spec, prefix):
-        # Removed "extern/nlohmannjson", "extern/log4cplus", "extern/jansson"
-        externPackages=["extern/xerces", "extern/asyncresolv", "extern/i2o", "extern/cgicc",  "extern/xalan", "extern/mimetic"]
+        # Removed "extern/nlohmannjson", "extern/log4cplus", "extern/jansson", "extern/xerces", "extern/xalan"
+        externPackages=["extern/asyncresolv", "extern/i2o", "extern/cgicc", "extern/mimetic"]
 
         Packages=["config", "xcept", "log/udpappender", "log/xmlappender", "toolbox",
  "xoap", "xoap/filter", "xdata", "pt", "xgi", "i2o", "xdaq", "i2o/utils", "pt/http", 

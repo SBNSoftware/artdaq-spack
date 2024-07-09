@@ -27,6 +27,7 @@ class ArtdaqMfextensions(CMakePackage):
     git = "https://github.com/art-daq/artdaq_mfextensions.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v1_09_01", commit="67df43b925235736cef91497e3148325e96b4ee6")
     version("v1_09_00", commit="f27e0c459f0b7678abe1003d9fdf3653a6b9385b")
     version("v1_08_06", sha256="3689545eb4126a5a3501703d3f91e9f4725366e8fd7bbfa4e0999e9183dc8884")
     version("v1_08_05", sha256="a92d230f6555fcfc565e6907d4ef02d0f7f1491db90605e0f49485dec7c63e6e")
@@ -41,10 +42,20 @@ class ArtdaqMfextensions(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17", conditional("20",when="@v1_08_04:")),
+        values=("14", "17"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
+        when="@:v1_08_04"        
+    )
+    variant(
+        "cxxstd",
+        default="20",
+        values=( "17","20"),
+        multi=False,
+        sticky=True,
+        description="Use the specified C++ standard when building.",
+        when="@v1_08_04:"        
     )
 
     depends_on("cetmodules", type="build")
@@ -54,8 +65,19 @@ class ArtdaqMfextensions(CMakePackage):
 
     with when('@:v1_08_07'):
         def cmake_args(self):
-            args = [ self.define('IGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES', True) ]
+            args = [ 
+            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"), self.define('IGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES', True) ]
             return args
+
+    def cmake_args(self):
+        args = [
+            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+        ]
+        if os.path.exists("CMakePresets.cmake"):
+            args.extend(["--preset", "default"])
+        else:
+            self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
+        return args
 
     def setup_run_environment(self, env):
         prefix = self.prefix

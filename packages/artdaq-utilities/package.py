@@ -27,6 +27,7 @@ class ArtdaqUtilities(CMakePackage):
     git = "https://github.com/art-daq/artdaq_utilities.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v1_09_01", commit="08a117ded7ea08f938af06f0e3091ac701f4ec2b")
     version("v1_09_00", commit="dd5eea2969fa2bbe31867355a43a9d0fa48c95cd")
     version("v1_08_06", sha256="76aff946eae802cc2a8ac285e92403a4c65af82de99f188869e6c43228f315e4")
     version("v1_08_04", sha256="66a3ccbf975c0171c8f2f377a17aa646d22f2aa190763939c270d5a8bf52d3f2")
@@ -40,16 +41,36 @@ class ArtdaqUtilities(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17", conditional("20",when="@v1_08_04:")),
+        values=("14", "17"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
+        when="@:v1_08_04"        
+    )
+    variant(
+        "cxxstd",
+        default="20",
+        values=("17", "20"),
+        multi=False,
+        sticky=True,
+        description="Use the specified C++ standard when building.",
+        when="@v1_08_04:"        
     )
 
     depends_on("cetmodules", type="build")
     depends_on("messagefacility")
 
     depends_on("trace+mf")
+
+    def cmake_args(self):
+        args = [
+            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+        ]
+        if os.path.exists("CMakePresets.cmake"):
+            args.extend(["--preset", "default"])
+        else:
+            self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
+        return args
 
     def setup_run_environment(self, env):
         prefix = self.prefix
