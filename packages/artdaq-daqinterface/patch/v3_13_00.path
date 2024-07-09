@@ -1,0 +1,36 @@
+diff --git a/bin/package_setup_spack.sh b/bin/package_setup_spack.sh
+index 85f1724..83e5d8f 100755
+--- a/bin/package_setup_spack.sh
++++ b/bin/package_setup_spack.sh
+@@ -43,7 +43,8 @@ if [[ -n $spackdir ]]; then
+     spack unload >/dev/null 2>&1
+ 
+     # Load desired package
+-    spack load --first $packagename
++    SPACK_ARCH="linux-$(spack arch --operating-system 2>/dev/null)-x86_64_v2"
++    spack load --first $packagename arch=${SPACK_ARCH}
+ 
+     return $?
+ else
+diff --git a/rc/control/daqinterface.py b/rc/control/daqinterface.py
+index e492740..95aa217 100755
+--- a/rc/control/daqinterface.py
++++ b/rc/control/daqinterface.py
+@@ -2038,7 +2038,7 @@ class DAQInterface(Component):
+         if len(needed_packages) == 0:
+             return
+ 
+-        if "artdaq_daqinterface" in packages:
++        if "artdaq_daqinterface-none" in packages:
+             assert (
+                 len(packages) == 1
+             ), "Note to developer: you'll probably need to refactor save_run_records.py if you want to get the version of other packages alongside the version of DAQInterface"
+@@ -2054,7 +2054,7 @@ class DAQInterface(Component):
+             )
+         elif self.spackdir != None:
+             cmd = (
+-                "%s ; . %s; spack find --loaded | sed -r -n 's/^(%s)@(\\S+).*/\\1 \\2/p'" % (
++                "%s ; . %s; spack find -d --loaded | sed -r -n 's/^\s+(%s)@(\\S+).*/\\1 \\2/p'" % (
+                     ";".join(get_setup_commands(self.productsdir, self.spackdir)),
+                     self.daq_setup_script,
+                     "|".join(needed_packages),                

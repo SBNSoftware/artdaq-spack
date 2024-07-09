@@ -47,3 +47,5 @@ class ArtdaqDaqinterface(CMakePackage):
         prefix = self.prefix
         env.set("ARTDAQ_DAQINTERFACE_DIR", prefix)
         env.set("ARTDAQ_DAQINTERFACE_VERSION", "SPACK") # Needed by source_me
+
+    patch("patch/v3_13_00.path", when="@v3_13_00")
