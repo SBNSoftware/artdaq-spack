@@ -49,3 +49,4 @@ class ArtdaqDaqinterface(CMakePackage):
         env.set("ARTDAQ_DAQINTERFACE_VERSION", "SPACK") # Needed by source_me
 
     patch("patch/v3_13_00.path", when="@v3_13_00")
+    patch("patch/v3_14_00.path", when="@v3_14_00")

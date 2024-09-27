@@ -1,19 +1,5 @@
-diff --git i/bin/package_setup_spack.sh w/bin/package_setup_spack.sh
-index 85f1724..83e5d8f 100755
---- i/bin/package_setup_spack.sh
-+++ w/bin/package_setup_spack.sh
-@@ -43,7 +43,8 @@ if [[ -n $spackdir ]]; then
-     spack unload >/dev/null 2>&1
-
-     # Load desired package
--    spack load --first $packagename
-+    SPACK_ARCH="linux-$(spack arch --operating-system 2>/dev/null)-x86_64_v2"
-+    spack load --first $packagename arch=${SPACK_ARCH}
-
-     return $?
- else
 diff --git i/rc/control/bookkeeping.py w/rc/control/bookkeeping.py
-index 00956cf..5d67191 100644
+index 00956cf..24638fa 100644
 --- i/rc/control/bookkeeping.py
 +++ w/rc/control/bookkeeping.py
 @@ -884,7 +884,7 @@ def bookkeeping_for_fhicl_documents_artdaq_v3_base(self):
@@ -41,52 +27,53 @@ index 00956cf..5d67191 100644
 +                            multicast_interface_ip = multicast_interface_ip_to_use
 +                            self.print_log('i', 'More than one private network visible to all processes: '
 +                                + ', '.join(list(private_networks_seen_by_processes_involved_in_requests))
-+                                + ', defining to MULTICAST_INTERFACE_IP_TO_USE env variable: ' + multicast_interface_ip)
++                                + ', using MULTICAST_INTERFACE_IP_TO_USE env variable: ' + multicast_interface_ip)
 +
                      for process_involved_in_request in processes_involved_in_requests:
                          for i_proc in range(len(self.procinfos)):
                              if (
 diff --git i/rc/control/config_functions_database_v2.py w/rc/control/config_functions_database_v2.py
-index 2e6a90c..f1cc255 100644
+index 2e6a90c..7ee51e8 100644
 --- i/rc/control/config_functions_database_v2.py
 +++ w/rc/control/config_functions_database_v2.py
-@@ -11,7 +11,7 @@ sys.path.append(os.environ["ARTDAQ_DAQINTERFACE_DIR"])
+@@ -5,13 +5,14 @@
+
+ import os
+ import sys
++import re
+
+ sys.path.append(os.environ["ARTDAQ_DAQINTERFACE_DIR"])
+
  dbdirs = [
      dbdir
      for dbdir in os.environ["PYTHONPATH"].split(":")
 -    if "/artdaq_database/" in dbdir
-+    if "/artdaq-database/" in dbdir
++    if re.search(r"/artdaq[-_]database/", dbdir)
  ]
  assert (
      len(dbdirs) == 1
+@@ -25,7 +26,6 @@ from rc.control.utilities import fhiclize_document
+ import shutil
+ from shutil import copyfile
+
+-import re
+ import os
+ import string
+ from time import time
 diff --git i/rc/control/daqinterface.py w/rc/control/daqinterface.py
-index e492740..54b94fb 100755
+index 855de99..2b06f39 100755
 --- i/rc/control/daqinterface.py
 +++ w/rc/control/daqinterface.py
-@@ -1294,7 +1294,7 @@ class DAQInterface(Component):
-         )
-
-         checked_cmd = construct_checked_command(cmds)
--
-+        print("Checking for artdaq_mfextensions: %s" % (checked_cmd))
-         status = Popen(
-             checked_cmd,
-             executable="/bin/bash",
-@@ -2035,10 +2035,12 @@ class DAQInterface(Component):
-             else:
-                 needed_packages.append(package if self.productsdir != None else package.replace("_", "-"))
-
-+        #self.print_log("i", 'needed packages: %s' % "".join(needed_packages))
-+
+@@ -2038,7 +2038,7 @@ class DAQInterface(Component):
          if len(needed_packages) == 0:
              return
 
 -        if "artdaq_daqinterface" in packages:
-+        if "artdaq_daqinterface-none" in packages:
++        if self.productsdir is not None and "artdaq_daqinterface" in packages:
              assert (
                  len(packages) == 1
              ), "Note to developer: you'll probably need to refactor save_run_records.py if you want to get the version of other packages alongside the version of DAQInterface"
-@@ -2054,13 +2056,15 @@ class DAQInterface(Component):
+@@ -2054,7 +2054,7 @@ class DAQInterface(Component):
              )
          elif self.spackdir != None:
              cmd = (
@@ -95,18 +82,16 @@ index e492740..54b94fb 100755
                      ";".join(get_setup_commands(self.productsdir, self.spackdir)),
                      self.daq_setup_script,
                      "|".join(needed_packages),
-                 )
+@@ -2071,11 +2071,22 @@ class DAQInterface(Component):
+                 stdin=subprocess.PIPE,
+                 encoding="utf-8",
              )
-
-+        #self.print_log("i", 'cmd: %s' % cmd)
-+
-         if cmd != "":
-             proc = Popen(
-                 cmd,
-@@ -2076,6 +2080,17 @@ class DAQInterface(Component):
+-
+             out, err = proc.communicate()
              stdoutlines = out.strip().split("\n")
              stderrlines = err.strip().split("\n")
 
++
 +            unwanted_warnings = [
 +                'WARNING: unable to determine tty. While this will not affect',
 +                'actual datataking, any DAQInterface launched in this environment',
@@ -121,29 +106,17 @@ index e492740..54b94fb 100755
              for line in stderrlines:
                  if not line or not line.strip():
                      stderrlines.remove(line)
-@@ -2090,6 +2105,8 @@ class DAQInterface(Component):
-                     stderrlines.remove(line)
-
-             if len(stderrlines) > 0:
-+                self.print_log("w", 'stderrlines %s' % "".join(stderrlines))
-+
-                 raise Exception(
-                     'Error in %s: the command "%s" yields output to stderr:\n"%s"'
-                     % (
 diff --git i/rc/control/utilities.py w/rc/control/utilities.py
-index a809017..d026c60 100755
+index 44dc6a5..35e21b6 100755
 --- i/rc/control/utilities.py
 +++ w/rc/control/utilities.py
-@@ -1247,10 +1247,10 @@ def get_setup_commands(productsdir=None, spackdir=None, log_file=None):
-     elif spackdir != None:
-         if log_file == None:
+@@ -1250,7 +1250,8 @@ def get_setup_commands(productsdir=None, spackdir=None, log_file=None):
              output.append('. %s/share/spack/setup-env.sh' % (spackdir))
--            output.append('spack unload > /dev/null 2>&1')
-+            #output.append('spack unload > /dev/null 2>&1')
          else:
              output.append('. %s/share/spack/setup-env.sh >> %s 2>&1' % (spackdir, log_file))
--            output.append('spack unload > /dev/null 2>&1')
-+            #output.append('spack unload > /dev/null 2>&1')
+-        output.append('spack unload > /dev/null 2>&1')
++        if os.environ.get("DAQINTERFACE_SPACK_UNLOAD", "false").lower() == "true":
++            output.append('spack unload > /dev/null 2>&1')
      return output
 
  def kill_tail_f():
