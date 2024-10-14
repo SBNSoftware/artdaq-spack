@@ -42,6 +42,7 @@ class ArtdaqSuite(BundlePackage):
 
 
     with when("@v3_14_01"):
+        depends_on("trace@v3_17_14")
         depends_on("artdaq-core@v3_11_01")
         depends_on("artdaq-utilities@v1_10_00")
         depends_on("artdaq-mfextensions@v1_09_02")
