@@ -52,7 +52,7 @@ class Trace(CMakePackage):
     variant("kmod", default=True, description="Create Linux kernel module")
     variant("mf", default=False, description="Compile MessageFacility library")
 
-    patch("stronger_want_kmod.patch")
+    patch("stronger_want_kmod.patch", when="@:v3_17_13")
 
     depends_on("messagefacility", when="+mf")
 
