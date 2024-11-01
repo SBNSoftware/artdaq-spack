@@ -32,7 +32,6 @@ class Artdaq(CMakePackage):
     version("develop", branch="develop", get_full_repo=True)
     version("v3_14_01", commit="1d6e7037dd85c31525f863e035f0b423367d637b")   
     version("v3_14_00", commit="2006c00ed3c2480ecbea6e18fb8f5711df7529c2")    
-    version("v3_13_02", commit="6f92c47b87f80a41028b52b428af09e2ba475f87")    
     version("v3_13_01", commit="4eb46d5bd3b4f00973f99114efe66428c6f44626")    
     version("v3_13_00", commit="0317da6544fbda80a760f2cac264bc6d1a328fc7")
     version("v3_12_07", sha256="61a2bc94ada2eff1e5001d9234902471164763a01d0e47f9ebd1a3a23d7dcd43")
