@@ -31,6 +31,7 @@ class Trace(CMakePackage):
     depends_on("cetmodules", type="build")
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v3_17_14", commit="4f0a54a354b7f19a7cc3874d2d7b48a24990a102")
     version("v3_17_13", commit="01865d3fc90e82f20b50da10b6a7993ab428bcf5")
     version("v3_17_12", commit="58433e1c560c4c6538c6f6fc79b04a106691749f")
     version("v3_17_11", commit="23f21ee9c53af5bd0e1b695038cda457517028fe")
@@ -71,7 +72,7 @@ class Trace(CMakePackage):
     variant("kmod", default=True, description="Create Linux kernel module")
     variant("mf", default=False, description="Compile MessageFacility library")
 
-    patch("stronger_want_kmod.patch")
+    patch("stronger_want_kmod.patch", when="@:v3_17_13")
 
     depends_on("messagefacility", when="+mf")
 
