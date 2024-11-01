@@ -1,0 +1,149 @@
+diff --git i/bin/package_setup_spack.sh w/bin/package_setup_spack.sh
+index 85f1724..83e5d8f 100755
+--- i/bin/package_setup_spack.sh
++++ w/bin/package_setup_spack.sh
+@@ -43,7 +43,8 @@ if [[ -n $spackdir ]]; then
+     spack unload >/dev/null 2>&1
+
+     # Load desired package
+-    spack load --first $packagename
++    SPACK_ARCH="linux-$(spack arch --operating-system 2>/dev/null)-x86_64_v2"
++    spack load --first $packagename arch=${SPACK_ARCH}
+
+     return $?
+ else
+diff --git i/rc/control/bookkeeping.py w/rc/control/bookkeeping.py
+index 00956cf..5d67191 100644
+--- i/rc/control/bookkeeping.py
++++ w/rc/control/bookkeeping.py
+@@ -884,7 +884,7 @@ def bookkeeping_for_fhicl_documents_artdaq_v3_base(self):
+                     "BoardReader" in procinfo.name
+                     and procinfo.label not in nonsending_boardreaders
+                 ):
+-                    for token in ["[Ww]indow", "[Ss]ingle", "[Bb]uffer"]:
++                    for token in ["[Ww]indow", "[Ss]ingle", "[Bb]uffer", "[Ss]equence" ]:
+                         res = re.search(
+                             r"\n\s*request_mode\s*:\s*\"?%s\"?" % (token),
+                             procinfo.fhicl_used,
+@@ -941,6 +941,20 @@ def bookkeeping_for_fhicl_documents_artdaq_v3_base(self):
+                     multicast_interface_ip = list(
+                         private_networks_seen_by_processes_involved_in_requests
+                     )[0]
++
++                    multicast_interface_ip_to_use = os.getenv('MULTICAST_INTERFACE_IP_TO_USE')
++                    if len(list(private_networks_seen_by_processes_involved_in_requests))>1:
++                        if multicast_interface_ip_to_use is None:
++                            self.print_log('w', 'More than one private network visible to all processes: '
++                                + ', '.join(list(private_networks_seen_by_processes_involved_in_requests))
++                                + ', do not know which to use, defaulting to: ' + multicast_interface_ip
++                                + '; consider defining MULTICAST_INTERFACE_IP_TO_USE env variable')
++                        else:
++                            multicast_interface_ip = multicast_interface_ip_to_use
++                            self.print_log('i', 'More than one private network visible to all processes: '
++                                + ', '.join(list(private_networks_seen_by_processes_involved_in_requests))
++                                + ', defining to MULTICAST_INTERFACE_IP_TO_USE env variable: ' + multicast_interface_ip)
++
+                     for process_involved_in_request in processes_involved_in_requests:
+                         for i_proc in range(len(self.procinfos)):
+                             if (
+diff --git i/rc/control/config_functions_database_v2.py w/rc/control/config_functions_database_v2.py
+index 2e6a90c..f1cc255 100644
+--- i/rc/control/config_functions_database_v2.py
++++ w/rc/control/config_functions_database_v2.py
+@@ -11,7 +11,7 @@ sys.path.append(os.environ["ARTDAQ_DAQINTERFACE_DIR"])
+ dbdirs = [
+     dbdir
+     for dbdir in os.environ["PYTHONPATH"].split(":")
+-    if "/artdaq_database/" in dbdir
++    if "/artdaq-database/" in dbdir
+ ]
+ assert (
+     len(dbdirs) == 1
+diff --git i/rc/control/daqinterface.py w/rc/control/daqinterface.py
+index e492740..54b94fb 100755
+--- i/rc/control/daqinterface.py
++++ w/rc/control/daqinterface.py
+@@ -1294,7 +1294,7 @@ class DAQInterface(Component):
+         )
+
+         checked_cmd = construct_checked_command(cmds)
+-
++        print("Checking for artdaq_mfextensions: %s" % (checked_cmd))
+         status = Popen(
+             checked_cmd,
+             executable="/bin/bash",
+@@ -2035,10 +2035,12 @@ class DAQInterface(Component):
+             else:
+                 needed_packages.append(package if self.productsdir != None else package.replace("_", "-"))
+
++        #self.print_log("i", 'needed packages: %s' % "".join(needed_packages))
++
+         if len(needed_packages) == 0:
+             return
+
+-        if "artdaq_daqinterface" in packages:
++        if "artdaq_daqinterface-none" in packages:
+             assert (
+                 len(packages) == 1
+             ), "Note to developer: you'll probably need to refactor save_run_records.py if you want to get the version of other packages alongside the version of DAQInterface"
+@@ -2054,13 +2056,15 @@ class DAQInterface(Component):
+             )
+         elif self.spackdir != None:
+             cmd = (
+-                "%s ; . %s; spack find --loaded | sed -r -n 's/^(%s)@(\\S+).*/\\1 \\2/p'" % (
++                "%s ; . %s; spack find -d --loaded | sed -r -n 's/^\s+(%s)@(\\S+).*/\\1 \\2/p'" % (
+                     ";".join(get_setup_commands(self.productsdir, self.spackdir)),
+                     self.daq_setup_script,
+                     "|".join(needed_packages),
+                 )
+             )
+
++        #self.print_log("i", 'cmd: %s' % cmd)
++
+         if cmd != "":
+             proc = Popen(
+                 cmd,
+@@ -2076,6 +2080,17 @@ class DAQInterface(Component):
+             stdoutlines = out.strip().split("\n")
+             stderrlines = err.strip().split("\n")
+
++            unwanted_warnings = [
++                'WARNING: unable to determine tty. While this will not affect',
++                'actual datataking, any DAQInterface launched in this environment',
++                'may have problems with sending output to a MessageViewer instance'
++            ]
++
++            stderrlines = [
++                line for line in stderrlines
++                if not any(warning in line for warning in unwanted_warnings)
++            ]
++
+             for line in stderrlines:
+                 if not line or not line.strip():
+                     stderrlines.remove(line)
+@@ -2090,6 +2105,8 @@ class DAQInterface(Component):
+                     stderrlines.remove(line)
+
+             if len(stderrlines) > 0:
++                self.print_log("w", 'stderrlines %s' % "".join(stderrlines))
++
+                 raise Exception(
+                     'Error in %s: the command "%s" yields output to stderr:\n"%s"'
+                     % (
+diff --git i/rc/control/utilities.py w/rc/control/utilities.py
+index a809017..d026c60 100755
+--- i/rc/control/utilities.py
++++ w/rc/control/utilities.py
+@@ -1247,10 +1247,10 @@ def get_setup_commands(productsdir=None, spackdir=None, log_file=None):
+     elif spackdir != None:
+         if log_file == None:
+             output.append('. %s/share/spack/setup-env.sh' % (spackdir))
+-            output.append('spack unload > /dev/null 2>&1')
++            #output.append('spack unload > /dev/null 2>&1')
+         else:
+             output.append('. %s/share/spack/setup-env.sh >> %s 2>&1' % (spackdir, log_file))
+-            output.append('spack unload > /dev/null 2>&1')
++            #output.append('spack unload > /dev/null 2>&1')
+     return output
+
+ def kill_tail_f():
