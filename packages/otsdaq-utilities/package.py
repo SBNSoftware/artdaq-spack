@@ -58,6 +58,7 @@ class OtsdaqUtilities(CMakePackage):
     depends_on("cetmodules", type="build")
 
     depends_on("otsdaq")
+    depends_on("reredirect", when="@v2_09_00:")
 
     def cmake_args(self):
         args = [
