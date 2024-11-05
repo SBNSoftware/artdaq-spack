@@ -63,6 +63,7 @@ class Otsdaq(CMakePackage):
 
     depends_on("cetmodules", type="build")
     depends_on("xdaq")
+    depends_on("reredirect", when="@v2_09_00:")
 
     depends_on("artdaq")
     depends_on("artdaq-database~builtin_fhicl")
