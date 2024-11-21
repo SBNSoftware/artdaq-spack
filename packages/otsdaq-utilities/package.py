@@ -58,6 +58,8 @@ class OtsdaqUtilities(CMakePackage):
     depends_on("cetmodules", type="build")
 
     depends_on("otsdaq")
+#    depends_on("xsd") #for ECLWriter
+    depends_on("curl") #for ECLWriter
 
     def cmake_args(self):
         args = [
