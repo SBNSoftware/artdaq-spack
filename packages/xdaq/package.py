@@ -55,7 +55,7 @@ class Xdaq(MakefilePackage):
     patch("toolbox.src.GNUC.patch")
     patch("xoap.filter.src.common.patch")
 
-    depends_on("xerces-c")
+    depends_on("xerces-c@3.2")
     depends_on("nlohmann-json")
     depends_on("log4cplus")
     depends_on("xalan-c")
