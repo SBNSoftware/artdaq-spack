@@ -52,6 +52,8 @@ class ArtdaqSuite(BundlePackage):
         depends_on("artdaq-core-demo@v1_11_01", when="+demo")
         depends_on("artdaq-database@v1_10_01", when="+db")
         depends_on("artdaq-demo@v3_14_01", when="+demo")
+        depends_on("elfutils+nls ldflags=-lintl")
+        depends_on("libxpm ldflags=-lintl")
     with when("@v3_14_00"):
         depends_on("trace@v3_17_13")
         depends_on("artdaq-core@v3_11_00")
