@@ -7,7 +7,7 @@ import os
 import sys
 from distutils.util import check_environ
 
-from spack import *
+from spack.package import *
 
 
 def sanitize_environments(env, *vars):
