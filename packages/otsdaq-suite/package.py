@@ -26,7 +26,7 @@ class OtsdaqSuite(BundlePackage):
     squals = ("112", "117", "118", "120", "120a", "120b", "122", "123", "124", "126", "128", "130", "131", "132")
     variant(
         "s",
-        default="0",
+        default="132",
         values=("0",) + squals,
         multi=False,
         description="Art suite version to use",
@@ -37,7 +37,7 @@ class OtsdaqSuite(BundlePackage):
 
     variant(
         "artdaq",
-        default="0",
+        default="31500",
         values = ("0","31202","31203","31204", "31205", "31207", "31300", "31301", "31400", "31401", "31500"),
         multi=False,
         description="Artdaq suite version to use",
