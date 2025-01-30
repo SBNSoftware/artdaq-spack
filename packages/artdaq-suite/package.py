@@ -13,6 +13,7 @@ class ArtdaqSuite(BundlePackage):
 
     homepage="https://github.com/art-daq"
 
+    version("v3_16_00")
     version("v3_15_00")
     version("v3_14_01")
     version("v3_14_00")
@@ -41,6 +42,17 @@ class ArtdaqSuite(BundlePackage):
     variant("epics", default=True, description="Install artdaq EPICS plugin")
     variant("pcp", default=True, description="Install artdaq PCP MMV plugin")
 
+    with when("@v3_16_00"):
+        depends_on("trace@v3_17_17")
+        depends_on("artdaq-core@v3_13_00")
+        depends_on("artdaq-utilities@v1_11_00")
+        depends_on("artdaq-mfextensions@v1_10_00")
+        depends_on("artdaq@v3_16_00")
+        depends_on("artdaq-epics-plugin@v1_07_00", when="+epics")
+        depends_on("artdaq-daqinterface@v3_16_00")
+        depends_on("artdaq-core-demo@v1_12_00", when="+demo")
+        depends_on("artdaq-database@v1_10_02", when="+db")
+        depends_on("artdaq-demo@v3_16_00", when="+demo")
     with when("@v3_15_00"):
         depends_on("trace@v3_17_15")
         depends_on("artdaq-core@v3_12_00")

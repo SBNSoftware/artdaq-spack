@@ -27,6 +27,7 @@ class ArtdaqMfextensions(CMakePackage):
     git = "https://github.com/art-daq/artdaq_mfextensions.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v1_10_00", commit="6be6276c9c7798ab032935ca8053f910dd65b116")
     version("v1_09_02", commit="15e8f5c4c57e21039adfe956bf456627699f1c66")
     version("v1_09_01", commit="67df43b925235736cef91497e3148325e96b4ee6")
     version("v1_09_00", commit="f27e0c459f0b7678abe1003d9fdf3653a6b9385b")

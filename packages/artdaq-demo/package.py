@@ -27,11 +27,12 @@ class ArtdaqDemo(CMakePackage):
     git = "https://github.com/art-daq/artdaq_demo.git"
 
     version("develop", branch="develop", get_full_repo=True)
-    version("v3_15_00", commit="05d4b2c9bebe74a4e71de232ba9a1ae020d78f62")    
-    version("v3_14_01", commit="aaa8cc5cb2b7efc3544195e09d63c7db6d9f320c")    
-    version("v3_14_00", commit="2e67f04e7fac6b7ab6d6896c0df0316b3122ab1b")    
-    version("v3_13_01", commit="3bb72231d2196be8efd028b6137070e6ca2dcd60") 
-    version("v3_13_00", commit="a0255fe443765839448664c915b542b0419c0c7d") 
+    version("v3_16_00", commit="ece227114da3fc374c9c04446e01182b8b49bb1c")
+    version("v3_15_00", commit="05d4b2c9bebe74a4e71de232ba9a1ae020d78f62")
+    version("v3_14_01", commit="aaa8cc5cb2b7efc3544195e09d63c7db6d9f320c")
+    version("v3_14_00", commit="2e67f04e7fac6b7ab6d6896c0df0316b3122ab1b")
+    version("v3_13_01", commit="3bb72231d2196be8efd028b6137070e6ca2dcd60")
+    version("v3_13_00", commit="a0255fe443765839448664c915b542b0419c0c7d")
     version("v3_12_07", sha256="3908cc9678fa92c1b5870a5f67787fcabce2414ccb7d6aa5619b2484e866d43e")
     version("v3_12_05", sha256="0fe69abc89294903ac4c5f98bc2e71b6556e1b7e273c27dce6b4206c2e892510")
     version("v3_12_04", sha256="959a5926951199a3a19d5f29213cb4eae42899fca32e3c4e8f2b17ceea0a8e42")
