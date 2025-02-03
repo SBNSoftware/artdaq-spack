@@ -12,6 +12,7 @@ class OtsdaqSuite(BundlePackage):
     """The Off-The-Shelf DAQ suite, otsdaq, providing graphical wrappers for artdaq
     """
     
+    version("v2_10_00")
     version("v2_09_01")
     version("v2_09_00")
     version("v2_08_02")
@@ -59,6 +60,13 @@ class OtsdaqSuite(BundlePackage):
     variant("demo", default=False, description="Install otsdaq-demo")
     variant("prep", default=False, description="Install PREP modernization library")
     
+    with when("@v2_10_00"):
+        depends_on("otsdaq@v2_10_00")
+        depends_on("otsdaq-utilities@v2_10_00")
+        depends_on("otsdaq-components@v2_10_00")
+        depends_on("otsdaq-epics@v2_10_00")
+        depends_on("otsdaq-demo@v2_10_00", when="+demo")
+        depends_on("otsdaq-prepmodernization@v2_10_00", when="+prep")
     with when("@v2_09_01"):
         depends_on("otsdaq@v2_09_01")
         depends_on("otsdaq-utilities@v2_09_01")

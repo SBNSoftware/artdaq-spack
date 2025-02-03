@@ -29,6 +29,7 @@ class OtsdaqPrepmodernization(CMakePackage):
     git = "https://github.com/art-daq/otsdaq_prepmodernization.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v2_10_00", commit="40f6197b16c5e1f040a9638c572da383771a929a")
     version("v2_09_01", commit="73339975d4130bbe5e97ffbb83342e07e56d498f")
     version("v2_09_00", commit="b238f2e3feeab28fadf47d8cc40267363a5bd9b0")
     version("v2_08_02", commit="637dcff1fbdafcd775e12eea2384202ff84dd3d9")
