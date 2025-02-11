@@ -60,8 +60,13 @@ class ArtdaqMfextensions(CMakePackage):
         when="@v1_08_04:"        
     )
 
+    variant("kafka", default=True, description="Build the Kafka destination, which depends on librdkafka")
+    variant("curl", default=True, description="Build the SMTP destination, which depends on libcurl")
+
     depends_on("cetmodules", type="build")
     depends_on("qt@5.15:")
+    depends_on("librdkafka", when="+kafka")
+    depends_on("curl", when="+curl")
 
     depends_on("trace+mf")
 
