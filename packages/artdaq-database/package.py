@@ -25,10 +25,10 @@ class ArtdaqDatabase(CMakePackage):
     version("v1_10_02", commit="2e92a4357c9b4a7dbe2259a8d6dcf9b1dc39d582")
     version("v1_10_01", commit="43e8e3a4f0327f0bb6c381b75037eb51fa5719fd")
     version("v1_10_00", commit="9d80e35a2052c04a92cddd2691d760aa280811eb")
-    version("v1_09_00", sha256="f16c0ac03bb104ea4882dbfa5e7a6e828becef5b1bdec02269b694c23761fac9")
-    version("v1_07_04", sha256="700b63d849b235216e83315958bc83e08b03293425a7011235ee6bf269c73473")
-    version("v1_07_03", sha256="670a5d44236091bdb85ca643e27dc59fd263fdb2a7dcbeaa7ec04e2b5f67df40")
-    version("v1_07_02", sha256="8cb937967d16f25b59ee8e7104cd968956d892dbe24b29e393c5db982969e432")
+    version("v1_09_00", commit="06041b749dd2b6fde936f54d34d179f99eed1229")
+    version("v1_07_04", commit="e382aa88f23d70409508a3cbeae378ddb83cec1f")
+    version("v1_07_03", commit="2cb8098b33333f92c96273d8bb959657e7eb3c25")
+    version("v1_07_02", commit="a3d27b761786aeb7fdff6dc1baeaca9b8bedbcce")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/artdaq_database/archive/refs/tags/{0}.tar.gz"

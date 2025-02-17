@@ -35,11 +35,11 @@ class OtsdaqPrepmodernization(CMakePackage):
     version("v2_08_02", commit="637dcff1fbdafcd775e12eea2384202ff84dd3d9")
     version("v2_08_01", commit="f4a12f00d6f7709bdcfddcad49c9ee38f0cc69e3")
     version("v2_08_00", commit="c28c948dc934dd6370c5919c6c68e3bdb9d8feba")
-    version("v2_07_00", sha256="fdd9669d93f63be756a43113f2360497ef5d2ce5a42636fa44d9bdc363a07cc5")
-    version("v2_06_11", sha256="b6d5d52b723dacffe292dcd9979c8bb1a77e014f7f8c69b00b5a7d7dcc3ded8f")
-    version("v2_06_10", sha256="9f04f751b9161de42fe737d94a84f8b76bbfc66572d13c537d431a5fa860d810")
-    version("v2_06_09", sha256="2292d08afa50c6946f722a0a1ece333a889e5b018fcab2c0d28d03fb843dd975")
-    version("v2_06_08", sha256="bbb04dee03dc212aa499f7d978492db26f6896e8436d0c14576be4e22d688e59")
+    version("v2_07_00", commit="0966c03205416c41913b4e23aef21b417e48099e")
+    version("v2_06_11", commit="82a680ad2adde195f9c80ed112278c24801f7c98")
+    version("v2_06_10", commit="50748b05521346bd8cf8ab5c70f3711760fbb44c")
+    version("v2_06_09", commit="9ac1821a9b432dd366ee404c4a5929783934dec1")
+    version("v2_06_08", commit="70d400ec9d03cea9ec60429954b845d667c88622")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/otsdaq_prepmodernization/archive/refs/tags/{0}.tar.gz"

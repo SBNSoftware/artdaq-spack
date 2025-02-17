@@ -31,11 +31,11 @@ class ArtdaqMfextensions(CMakePackage):
     version("v1_09_02", commit="15e8f5c4c57e21039adfe956bf456627699f1c66")
     version("v1_09_01", commit="67df43b925235736cef91497e3148325e96b4ee6")
     version("v1_09_00", commit="f27e0c459f0b7678abe1003d9fdf3653a6b9385b")
-    version("v1_08_06", sha256="3689545eb4126a5a3501703d3f91e9f4725366e8fd7bbfa4e0999e9183dc8884")
-    version("v1_08_05", sha256="a92d230f6555fcfc565e6907d4ef02d0f7f1491db90605e0f49485dec7c63e6e")
-    version("v1_08_04", sha256="2f6cdcd0dd083d91761df06d203487613723d770051e17b967f499e4348de7c9")
-    version("v1_08_03", sha256="c83c8c3c0bb525ae504b5efee910d5a2e7c0278ddc46b04461c76425e652de62")
-    version("v1_08_02", sha256="d03b4261491bc879a34908c70f7f49cd64624ec889bfb8f486f7ce9fd1bd7f6b")
+    version("v1_08_06", commit="ab071ccb57173931f30130aa33b52a48e9d28d7c")
+    version("v1_08_05", commit="153289123420aea7dee0bea0e560055db651aa07")
+    version("v1_08_04", commit="458481dadefd5b8ebf9ec1e318f0853e9160bdf3")
+    version("v1_08_03", commit="8e83c0cb8c5d8c8d8fa5fd2b268c5afbb23d4ea4")
+    version("v1_08_02", commit="e8bee6a61cdbfadea9c96c95865dc138c2bdf815")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/artdaq_mfextensions/archive/refs/tags/{0}.tar.gz"
