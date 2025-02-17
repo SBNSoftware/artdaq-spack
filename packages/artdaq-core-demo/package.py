@@ -29,11 +29,11 @@ class ArtdaqCoreDemo(CMakePackage):
     version("v1_12_00", commit="b751d08973539b787288c87f40dbac454a745031")
     version("v1_11_01", commit="4f5b040d6d43dc97033e0949bab27ecc2f6f16c2")
     version("v1_11_00", commit="3001d5f4dda9ee6f05609e7f99f90fe5ae81c6ea")
-    version("v1_10_07", sha256="8d5cb7cb02d3a186bf3e16f613565a6e32fabdb7511c457a9d4197f505040a91")
-    version("v1_10_05", sha256="d88a6b0b4af40bfcddcc48fc53e937c2b67b0eb4fd0ae7da8f410a151f76848a")
-    version("v1_10_04", sha256="dfd8e9fee3ee4db745630664e2a36d3cd2200871d8bc83a6216f88be1adb18a1")
-    version("v1_10_03", sha256="c3fc28422e2a08ead7b56e9a9edaf2dac8bd0c769687aa6f21d375609cc6c0c4")
-    version("v1_10_02", sha256="ea6b04590bfa158e1528bf4b46cc04a0a7b065848d48ba3ab1cf94ac1bc45389")
+    version("v1_10_07", commit="459a63829b096fd84d2bb673587f1dd1f0720f95")
+    version("v1_10_05", commit="8098e55fc42f1f2042419bb4a42063e58a544e03")
+    version("v1_10_04", commit="6f0b0730c3077732d79ed2e02fdbe6eee6f5189b")
+    version("v1_10_03", commit="20f691b6c1b093b7d9a513bf10ac26e9820b193a")
+    version("v1_10_02", commit="aba71a8cae83b0cb32eecebebada1c1efcad0b4f")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/artdaq_core_demo/archive/refs/tags/{0}.tar.gz"

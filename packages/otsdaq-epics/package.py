@@ -28,11 +28,11 @@ class OtsdaqEpics(CMakePackage):
     version("v2_08_02", commit="77c961a8be6114f0a374fabef458558ed849b72f")
     version("v2_08_01", commit="01ce6cddcc7be28e79c86893b99c114cb12b142f")
     version("v2_08_00", commit="33cfc3b3dfc47e175fd0b72e42eaef56c2746828")
-    version("v2_07_00", sha256="60bf90b0572ef0f20df9b7728f3274b38be46e2a49b0dbe2e1ab17b4c146d6b0")
-    version("v2_06_11", sha256="7bf9253b421846992fbf23bbb9a749f80ff2c0073954803951d3f8df1dda9925")
-    version("v2_06_10", sha256="106321637bf47facd7ea59d21575c91fa8efaddd0afb6067de209231ecbe7a6d")
-    version("v2_06_09", sha256="96c5e5b9a88fd0f18a6682d210bde83dbad7a25b9c8ca5ce4acf072cf02702a8")
-    version("v2_06_08", sha256="5f24df325f4e27dfbd5a30892a80ba75a3eef642d60a759d1580f846f2e22813")
+    version("v2_07_00", commit="d5651b1e27be1418d66a815c9d6dfe06613642eb")
+    version("v2_06_11", commit="6214e687c895ddb1e30b8bf14ab89801c5f4cb31")
+    version("v2_06_10", commit="7e2f91eb7c161e21900526b0440fc765d005b720")
+    version("v2_06_09", commit="586ee271a7c301b1a0efddb59b6ba008280651d0")
+    version("v2_06_08", commit="32bdbcd6ec727eda64766aa2d70ae2b7871a98eb")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/otsdaq_epics/archive/refs/tags/{0}.tar.gz"

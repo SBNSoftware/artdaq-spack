@@ -32,10 +32,10 @@ class ArtdaqEpicsPlugin(CMakePackage):
     version("v1_06_02", commit="5f4bc2056c51b0b1c84322d91866d29378e9739e")
     version("v1_06_01", commit="7da37d4f86fbd37fe666aba4f7e80b3240daa678")
     version("v1_06_00", commit="7fb149d0dedf5216d29b03359738d5b21f59680a")
-    version("v1_05_06", sha256="b0e0c203199eb3a826a3560345a8e7f9b5ae2f81941caf7c6fe3730dad0b9d27")
-    version("v1_05_04", sha256="b59d8022b00935e4d4fcfcc2a853113c7551473b6f7bdd19ade8e42363062ab8")
-    version("v1_05_03", sha256="68937458d87d53ac20607b9e62ac13616c143f3f074675b047897a0b10cf20f0")
-    version("v1_05_02", sha256="8a8d12f29a357c2426c16c3aef1a745b6bf3308ede38aae2300584eff582a3cf")
+    version("v1_05_06", commit="e0542cc88bb0da25ac875552ba1fa45a1e28ce95")
+    version("v1_05_04", commit="e68e85038ff75b6d2c1fb60ef11d4f6683f7241d")
+    version("v1_05_03", commit="a6d75ec3f4523b53aabfd5c9ed7419ae0c2cef5b")
+    version("v1_05_02", commit="0cfb5bbb8f079dff64c7bce1f11524b0e0c97a64")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/artdaq_epics_plugin/archive/refs/tags/{0}.tar.gz"

@@ -34,11 +34,11 @@ class OtsdaqDemo(CMakePackage):
     version("v2_08_02", commit="4c4af9009475e00cacdd4fb8c700588f42366bab")
     version("v2_08_01", commit="0ea738a6f21c8678cc6c9d8f41ca1163ccb2cd18")
     version("v2_08_00", commit="677f1844f351c0ac5a481f484c54b8d0ea877191")
-    version("v2_07_00", sha256="55d4379bce188b85c9a65989aa61064cd936dc897ba65a4caea23ad3a085cc00")
-    version("v2_06_11", sha256="5efa1736f3553f5f6d837597e650a9434ad564baaf78033e80b3d2c45e0db228")
-    version("v2_06_10", sha256="174160f6c9206ba50f29bc39797fbc390d5f705bd525e46513e552176cd28468")
-    version("v2_06_09", sha256="8685c2800c05b75695dd9f55c0816069f306de187060cf981d8db5c8831f9616")
-    version("v2_06_08", sha256="8402dbd195ad95ad5960ede16bdb56a780b248501c9486405e1a72c7993a7a70")
+    version("v2_07_00", commit="6fcd7affda19c37908e4b204b4cc819b5e229593")
+    version("v2_06_11", commit="6c5436d34d10c55842e7bd696e5e091239c1d158")
+    version("v2_06_10", commit="71655c13c66d1502c418d3aaf9c692aa226b8733")
+    version("v2_06_09", commit="ca9d6a82f25af382413f03ae46c5169aed6933c1")
+    version("v2_06_08", commit="4c2aaa53e27ca6ef0a98bfaed0e66e4a9e2e6b34")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/otsdaq_demo/archive/refs/tags/{0}.tar.gz"
