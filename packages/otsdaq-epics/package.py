@@ -45,7 +45,7 @@ class OtsdaqEpics(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v2_06_10"        
+        when="@:v2_06_10"
     )
     variant(
         "cxxstd",
@@ -54,7 +54,7 @@ class OtsdaqEpics(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v2_06_10:"        
+        when="@v2_06_10:"
     )
 
     depends_on("cetmodules", type="build")
@@ -73,6 +73,3 @@ class OtsdaqEpics(CMakePackage):
         else:
             self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
         return args
-
-
-

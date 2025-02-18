@@ -51,7 +51,7 @@ class OtsdaqDemo(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v2_06_10"        
+        when="@:v2_06_10"
     )
     variant(
         "cxxstd",
@@ -60,7 +60,7 @@ class OtsdaqDemo(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v2_06_10:"        
+        when="@v2_06_10:"
     )
 
     depends_on("cetmodules", type="build")

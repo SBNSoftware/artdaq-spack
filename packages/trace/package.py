@@ -75,7 +75,7 @@ class Trace(CMakePackage):
         sanitize_environments(env, "PATH", "CET_PLUGIN_PATH", "PERL5LIB")
 
     def setup_run_environment(self, env):
-        prefix = self.prefix 
+        prefix = self.prefix
 
         # Source the functions
         file_to_source = self.prefix.join("bin/trace_functions.sh")
@@ -107,7 +107,7 @@ class Trace(CMakePackage):
         # Source the functions
         file_to_source = self.prefix.join("bin/trace_functions.sh")
         print(f'source {file_to_source}')
-             
+
         # Binaries.
         env.prepend_path("PATH", os.path.join(prefix, "bin"))
         # Ensure we can find plugin libraries.

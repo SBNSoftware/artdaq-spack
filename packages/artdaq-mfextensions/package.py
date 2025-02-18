@@ -48,7 +48,7 @@ class ArtdaqMfextensions(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_08_04"        
+        when="@:v1_08_04"
     )
     variant(
         "cxxstd",
@@ -57,7 +57,7 @@ class ArtdaqMfextensions(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v1_08_04:"        
+        when="@v1_08_04:"
     )
 
     variant("kafka", default=True, description="Build the Kafka destination, which depends on librdkafka")
@@ -103,4 +103,3 @@ class ArtdaqMfextensions(CMakePackage):
         env.prepend_path("FHICL_FILE_PATH", prefix + "/fcl")
         # Cleaup.
         sanitize_environments(env, "CET_PLUGIN_PATH", "FHICL_FILE_PATH")
-    

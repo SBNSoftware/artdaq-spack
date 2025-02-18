@@ -45,7 +45,7 @@ class OtsdaqUtilities(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v2_06_10"        
+        when="@:v2_06_10"
     )
     variant(
         "cxxstd",
@@ -54,7 +54,7 @@ class OtsdaqUtilities(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v2_06_10:"        
+        when="@v2_06_10:"
     )
 
     depends_on("cetmodules", type="build")
@@ -87,4 +87,3 @@ class OtsdaqUtilities(CMakePackage):
         env.set("OTSDAQ_UTILITIES_DIR", prefix)
         # Ensure we can find libraries
         env.set("OTSDAQ_UTILITIES_LIB", prefix.lib)
-

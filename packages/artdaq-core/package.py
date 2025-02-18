@@ -25,7 +25,7 @@ class ArtdaqCore(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
     url = "https://github.com/art-daq/artdaq_core/archive/refs/tags/v3_09_04.tar.gz"
     git = "https://github.com/art-daq/artdaq_core.git"
-    
+
     version("v3_13_00", commit="75fb6a28438ff4a9a74dc9128c5bc05b11ae97f4")
     version("v3_12_00", commit="34d404d42b6d9bf3ae33b20aebd1fa6fc404a409")
     version("v3_11_01", commit="8bfc8d99f528ce36cb6faaca627090a329959596")
@@ -51,7 +51,7 @@ class ArtdaqCore(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v3_09_12"            
+        when="@:v3_09_12"
     )
     variant(
         "cxxstd",
@@ -60,9 +60,9 @@ class ArtdaqCore(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v3_09_12:"            
+        when="@v3_09_12:"
     )
-        
+
     variant("doc", default=False, description="Build documentation with Doxygen.")
 
     # art dependencies

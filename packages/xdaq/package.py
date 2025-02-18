@@ -91,7 +91,7 @@ class Xdaq(MakefilePackage):
         externPackages=["extern/asyncresolv", "extern/i2o", "extern/cgicc", "extern/mimetic"]
 
         Packages=["config", "xcept", "log/udpappender", "log/xmlappender", "toolbox",
- "xoap", "xoap/filter", "xdata", "pt", "xgi", "i2o", "xdaq", "i2o/utils", "pt/http", 
+ "xoap", "xoap/filter", "xdata", "pt", "xgi", "i2o", "xdaq", "i2o/utils", "pt/http",
 "pt/fifo", "executive", "hyperdaq", "xrelay", "b2in/nub", "b2in/utils", "b2in/eventing"]
 
         for extpackage in externPackages:

@@ -44,7 +44,7 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_03_04"        
+        when="@:v1_03_04"
     )
     variant(
         "cxxstd",
@@ -53,7 +53,7 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v1_03_04:"        
+        when="@v1_03_04:"
     )
 
     depends_on("cetmodules", type="build")
@@ -87,4 +87,3 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
         env.prepend_path("FHICL_FILE_PATH", prefix + "/fcl")
         # Cleaup.
         sanitize_environments(env, "CET_PLUGIN_PATH", "FHICL_FILE_PATH")
-    

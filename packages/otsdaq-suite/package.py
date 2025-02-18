@@ -11,7 +11,7 @@ from spack.package import *
 class OtsdaqSuite(BundlePackage):
     """The Off-The-Shelf DAQ suite, otsdaq, providing graphical wrappers for artdaq
     """
-    
+
     version("v2_10_00")
     version("v2_09_01")
     version("v2_09_00")
@@ -23,7 +23,7 @@ class OtsdaqSuite(BundlePackage):
     version("v2_06_10")
     version("v2_06_09")
     version("v2_06_08")
-    
+
     squals = ("112", "117", "118", "120", "120a", "120b", "122", "123", "124", "126", "128", "130", "131", "132")
     variant(
         "s",
@@ -43,7 +43,7 @@ class OtsdaqSuite(BundlePackage):
         multi=False,
         description="Artdaq suite version to use",
     )
-    
+
     depends_on("artdaq-suite@v3_16_00", when="artdaq=31600")
     depends_on("artdaq-suite@v3_15_00", when="artdaq=31500")
     depends_on("artdaq-suite@v3_14_01", when="artdaq=31401")
@@ -59,7 +59,7 @@ class OtsdaqSuite(BundlePackage):
 
     variant("demo", default=False, description="Install otsdaq-demo")
     variant("prep", default=False, description="Install PREP modernization library")
-    
+
     with when("@v2_10_00"):
         depends_on("otsdaq@v2_10_00")
         depends_on("otsdaq-utilities@v2_10_00")

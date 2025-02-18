@@ -67,7 +67,7 @@ class Artdaq(CMakePackage):
     )
 
     depends_on("art-root-io")
-    
+
     depends_on("cetmodules", type="build")
     depends_on("xmlrpc-c+curl")
     depends_on("swig", type="build")
