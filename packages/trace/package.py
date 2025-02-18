@@ -80,7 +80,7 @@ class Trace(CMakePackage):
         # Source the functions
         file_to_source = self.prefix.join("bin/trace_functions.sh")
         print(f'source {file_to_source}')
-        
+
         # Binaries.
         env.prepend_path("PATH", os.path.join(prefix, "bin"))
         # Ensure we can find plugin libraries.

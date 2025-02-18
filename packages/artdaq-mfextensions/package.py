@@ -72,7 +72,7 @@ class ArtdaqMfextensions(CMakePackage):
 
     with when('@:v1_08_07'):
         def cmake_args(self):
-            args = [ 
+            args = [
             self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"), self.define('IGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES', True) ]
             return args
 
