@@ -23,8 +23,8 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_pcp_mmv_plugin/archive/refs/tags/v1_03_02.tar.gz"
-    git = "https://github.com/art-daq/artdaq_pcp_mmv_plugin.git"
+    url = "https://github.com/art-daq/artdaq-pcp-mmv-plugin/archive/refs/tags/v1_03_02.tar.gz"
+    git = "https://github.com/art-daq/artdaq-pcp-mmv-plugin.git"
 
     version("develop", branch="develop", get_full_repo=True)
     version("v1_04_00", commit="c1dc4e08a717fac9e75f3c765639463734c297b0")
@@ -34,7 +34,7 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
     version("v1_03_02", commit="a09b0f3e137d300f8507f6e140301ec8a2a2748a")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_pcp_mmv_plugin/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-pcp-mmv-plugin/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(

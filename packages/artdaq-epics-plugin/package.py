@@ -23,8 +23,8 @@ class ArtdaqEpicsPlugin(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_epics_plugin/archive/refs/tags/v1_05_02.tar.gz"
-    git = "https://github.com/art-daq/artdaq_epics_plugin.git"
+    url = "https://github.com/art-daq/artdaq-epics-plugin/archive/refs/tags/v1_05_02.tar.gz"
+    git = "https://github.com/art-daq/artdaq-epics-plugin.git"
 
     version("develop", branch="develop", get_full_repo=True)
     version("v1_07_00", commit="21dd76ab9b73ad3293f33ecce0e73d227472c853")
@@ -38,7 +38,7 @@ class ArtdaqEpicsPlugin(CMakePackage):
     version("v1_05_02", commit="0cfb5bbb8f079dff64c7bce1f11524b0e0c97a64")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_epics_plugin/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-epics-plugin/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(

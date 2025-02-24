@@ -22,8 +22,8 @@ class ArtdaqCoreDemo(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_core_demo/archive/refs/tags/v1_10_02.tar.gz"
-    git = "https://github.com/art-daq/artdaq_core_demo.git"
+    url = "https://github.com/art-daq/artdaq-core-demo/archive/refs/tags/v1_10_02.tar.gz"
+    git = "https://github.com/art-daq/artdaq-core-demo.git"
 
     version("develop", branch="develop", get_full_repo=True)
     version("v1_12_00", commit="b751d08973539b787288c87f40dbac454a745031")
@@ -36,7 +36,7 @@ class ArtdaqCoreDemo(CMakePackage):
     version("v1_10_02", commit="aba71a8cae83b0cb32eecebebada1c1efcad0b4f")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_core_demo/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-core-demo/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(

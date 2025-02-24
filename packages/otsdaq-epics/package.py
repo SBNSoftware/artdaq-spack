@@ -18,8 +18,8 @@ class OtsdaqEpics(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/otsdaq_epics/archive/refs/tags/v2_06_08.tar.gz"
-    git = "https://github.com/art-daq/otsdaq_epics.git"
+    url = "https://github.com/art-daq/otsdaq-epics/archive/refs/tags/v2_06_08.tar.gz"
+    git = "https://github.com/art-daq/otsdaq-epics.git"
 
     version("develop", branch="develop", get_full_repo=True)
     version("v2_10_00", commit="245f56ddb5345c8199c5bb8c765ee1b0ba727620")
@@ -35,7 +35,7 @@ class OtsdaqEpics(CMakePackage):
     version("v2_06_08", commit="32bdbcd6ec727eda64766aa2d70ae2b7871a98eb")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/otsdaq_epics/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/otsdaq-epics/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
