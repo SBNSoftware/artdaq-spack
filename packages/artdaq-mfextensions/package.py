@@ -23,8 +23,8 @@ class ArtdaqMfextensions(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_mfextensions/archive/refs/tags/v1_08_02.tar.gz"
-    git = "https://github.com/art-daq/artdaq_mfextensions.git"
+    url = "https://github.com/art-daq/artdaq-mfextensions/archive/refs/tags/v1_08_02.tar.gz"
+    git = "https://github.com/art-daq/artdaq-mfextensions.git"
 
     version("develop", branch="develop", get_full_repo=True)
     version("v1_10_00", commit="6be6276c9c7798ab032935ca8053f910dd65b116")
@@ -38,7 +38,7 @@ class ArtdaqMfextensions(CMakePackage):
     version("v1_08_02", commit="e8bee6a61cdbfadea9c96c95865dc138c2bdf815")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_mfextensions/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-mfextensions/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
