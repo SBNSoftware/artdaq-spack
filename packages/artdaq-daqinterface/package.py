@@ -18,11 +18,11 @@ class ArtdaqDaqinterface(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_daqinterface/archive/refs/tags/v3_12_02.tar.gz"
-    git = "https://github.com/art-daq/artdaq_daqinterface.git"
+    url = "https://github.com/art-daq/artdaq-daqinterface/archive/refs/tags/v3_12_02.tar.gz"
+    git = "https://github.com/art-daq/artdaq-daqinterface.git"
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_daqinterface/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-daqinterface/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     version("develop", branch="develop", get_full_repo=True)

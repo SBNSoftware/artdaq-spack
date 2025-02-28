@@ -23,8 +23,8 @@ class ArtdaqCore(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_core/archive/refs/tags/v3_09_04.tar.gz"
-    git = "https://github.com/art-daq/artdaq_core.git"
+    url = "https://github.com/art-daq/artdaq-core/archive/refs/tags/v3_09_04.tar.gz"
+    git = "https://github.com/art-daq/artdaq-core.git"
 
     version("v3_13_00", commit="75fb6a28438ff4a9a74dc9128c5bc05b11ae97f4")
     version("v3_12_00", commit="34d404d42b6d9bf3ae33b20aebd1fa6fc404a409")
@@ -74,7 +74,7 @@ class ArtdaqCore(CMakePackage):
     depends_on("doxygen", when="+doc")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_core/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-core/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     def cmake_args(self):

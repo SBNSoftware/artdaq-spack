@@ -18,8 +18,8 @@ class OtsdaqComponents(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/otsdaq_components/archive/refs/tags/v2_06_08.tar.gz"
-    git = "https://github.com/art-daq/otsdaq_components.git"
+    url = "https://github.com/art-daq/otsdaq-components/archive/refs/tags/v2_06_08.tar.gz"
+    git = "https://github.com/art-daq/otsdaq-components.git"
 
     version("develop", branch="develop", get_full_repo=True)
     version("v2_10_00", commit="1938539dbdc9c6af78d3557093bcaffcf7e8f666")
@@ -35,7 +35,7 @@ class OtsdaqComponents(CMakePackage):
     version("v2_06_08", commit="75a30ad1bfb44b0817e791a9cea993df8cc33c7c")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/otsdaq_components/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/otsdaqcomponents/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
