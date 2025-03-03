@@ -26,6 +26,7 @@ class ArtdaqCore(CMakePackage):
     url = "https://github.com/art-daq/artdaq-core/archive/refs/tags/v3_09_04.tar.gz"
     git = "https://github.com/art-daq/artdaq-core.git"
 
+    version("v4_00_00", commit="12d6d49e14e50b009ffde0329f936ed00d22fe0e")
     version("v3_13_00", commit="75fb6a28438ff4a9a74dc9128c5bc05b11ae97f4")
     version("v3_12_00", commit="34d404d42b6d9bf3ae33b20aebd1fa6fc404a409")
     version("v3_11_01", commit="8bfc8d99f528ce36cb6faaca627090a329959596")
