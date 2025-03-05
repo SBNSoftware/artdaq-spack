@@ -65,7 +65,7 @@ class OtsdaqPrepmodernization(CMakePackage):
         when="@v2_06_10:"
     )
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
 
     depends_on("otsdaq")
     depends_on("otsdaq-utilities")

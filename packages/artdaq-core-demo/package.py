@@ -59,7 +59,7 @@ class ArtdaqCoreDemo(CMakePackage):
         when="@v1_10_04:"
     )
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
     depends_on("artdaq-core")
 
     def cmake_args(self):
