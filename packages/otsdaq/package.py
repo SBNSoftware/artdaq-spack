@@ -64,7 +64,7 @@ class Otsdaq(CMakePackage):
         when="@v2_06_10:"
     )
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
     depends_on("xdaq")
     depends_on("reredirect", when="@v2_09_00:")
 

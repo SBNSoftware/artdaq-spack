@@ -61,7 +61,7 @@ class ArtdaqDatabase(CMakePackage):
     depends_on("node-js", type="build", when="@:v1_07_05")
     depends_on("python", type="build")
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
 
     depends_on("cetlib", when="~builtin_fhicl")
 
