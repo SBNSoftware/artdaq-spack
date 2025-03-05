@@ -68,7 +68,7 @@ class ArtdaqCore(CMakePackage):
 
     # art dependencies
     depends_on("canvas-root-io")
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
 
     # artdaq dependencies
     depends_on("trace+mf")
