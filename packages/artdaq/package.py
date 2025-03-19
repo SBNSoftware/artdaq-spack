@@ -74,9 +74,12 @@ class Artdaq(CMakePackage):
     depends_on("swig", type="build")
     depends_on("node-js", type="build", when="@:v3_12_06")
 
-    depends_on("artdaq-core")
-    depends_on("artdaq-utilities")
-    depends_on("artdaq-mfextensions")
+    depends_on("artdaq-core@:v4_00_00", when="@:v4_00_00")
+    depends_on("artdaq-core@v4_00_00:", when="@v4_00_00:,develop")
+    depends_on("artdaq-utilities@:v2_00_00", when="@:v4_00_00")
+    depends_on("artdaq-utilities@v2_00_00:", when="@v4_00_00:,develop")
+    depends_on("artdaq-mfextensions@:v2_00_00", when="@:v4_00_00")
+    depends_on("artdaq-mfextensions@v2_00_00:", when="@v4_00_00:,develop")
 
     def cmake_args(self):
         args = [

@@ -68,8 +68,11 @@ class Otsdaq(CMakePackage):
     depends_on("xdaq")
     depends_on("reredirect", when="@v2_09_00:")
 
-    depends_on("artdaq")
+    depends_on("artdaq@:v4_00_00", when="@:v3_00_00")
+    depends_on("artdaq@v4_00_00:", when="@v3_00_00:,develop")
     depends_on("artdaq-database~builtin_fhicl")
+    depends_on("artdaq-database@:v2_00_00", when="@:v3_00_00")
+    depends_on("artdaq-database@v2_00_00:", when="@v3_00_00:,develop")
     depends_on("artdaq-daqinterface")
 
     def cmake_args(self):
