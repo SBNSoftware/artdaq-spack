@@ -65,7 +65,7 @@ class ArtdaqEpicsPlugin(CMakePackage):
     depends_on("epics-base")
 
     depends_on("artdaq-utilities@:v2_00_00", when="@:v2_00_00")
-    depends_on("artdaq-utilities@v2_00_00:", when="@v2_00_00:,develop")
+    depends_on("artdaq-utilities@v2_00_00:,develop", when="@v2_00_00:,develop")
 
     def cmake_args(self):
         args = [
