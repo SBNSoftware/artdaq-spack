@@ -76,6 +76,9 @@ class Otsdaq(CMakePackage):
     depends_on("artdaq-daqinterface@:v4_00_00", when="@:v3_00_00")
     depends_on("artdaq-daqinterface@v4_00_00:", when="@v3_00_00:,develop")
 
+    depends_on("artdaq cxxstd=20", when="cxxstd=20")
+    depends_on("artdaq cxxstd=17", when="cxxstd=17")
+
     def cmake_args(self):
         args = [
             self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),

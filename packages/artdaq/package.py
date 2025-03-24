@@ -67,7 +67,8 @@ class Artdaq(CMakePackage):
         when="@v3_12_04:"
     )
 
-    depends_on("art-root-io")
+    depends_on("art-root-io cxxstd=17", when="cxxstd=17")
+    depends_on("art-root-io cxxstd=20", when="cxxstd=20")
 
     depends_on("cetmodules@3.26.00:", type="build")
     depends_on("xmlrpc-c+curl")
