@@ -78,6 +78,11 @@ class OtsdaqSuite(BundlePackage):
         depends_on("otsdaq-epics@v3_00_00")
         depends_on("otsdaq-demo@v3_00_00", when="+demo")
         depends_on("otsdaq-prepmodernization@v3_00_00", when="+prep")
+
+        # External Dependencies not in art-suite or artdaq-suite
+        depends_on("libpqxx@7.6.0")
+        depends_on("xdaq@16_35_0_4")
+        depends_on("reredirect@0.3")
     with when("@v2_10_00"):
         depends_on("otsdaq@v2_10_00")
         depends_on("otsdaq-utilities@v2_10_00")
