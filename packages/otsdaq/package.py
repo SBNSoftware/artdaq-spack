@@ -75,6 +75,7 @@ class Otsdaq(CMakePackage):
     depends_on("artdaq-database@v2_00_00:,develop", when="@v3_00_00:,develop")
     depends_on("artdaq-daqinterface@:v4_00_00", when="@:v3_00_00")
     depends_on("artdaq-daqinterface@v4_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("artdaq-suite")
 
     depends_on("artdaq cxxstd=20", when="cxxstd=20")
     depends_on("artdaq cxxstd=17", when="cxxstd=17")

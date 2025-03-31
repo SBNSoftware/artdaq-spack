@@ -81,6 +81,7 @@ class Artdaq(CMakePackage):
     depends_on("artdaq-utilities@v2_00_00:,develop", when="@v4_00_00:,develop")
     depends_on("artdaq-mfextensions@:v2_00_00", when="@:v4_00_00")
     depends_on("artdaq-mfextensions@v2_00_00:,develop", when="@v4_00_00:,develop")
+    depends_on("art-suite")
 
     def cmake_args(self):
         args = [

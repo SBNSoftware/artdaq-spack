@@ -62,6 +62,7 @@ class OtsdaqUtilities(CMakePackage):
 
     depends_on("otsdaq@:v3_00_00", when="@:v3_00_00")
     depends_on("otsdaq@v3_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("artdaq-suite")
 
 #    depends_on("xsd") #for ECLWriter
     depends_on("curl") #for ECLWriter

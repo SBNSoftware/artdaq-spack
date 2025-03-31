@@ -62,6 +62,7 @@ class ArtdaqUtilities(CMakePackage):
 
     depends_on("cetmodules@3.26.00:", type="build")
     depends_on("messagefacility")
+    depends_on("art-suite")
 
     depends_on("trace+mf")
 

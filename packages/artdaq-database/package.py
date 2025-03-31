@@ -60,6 +60,7 @@ class ArtdaqDatabase(CMakePackage):
     depends_on("swig", type="build")
     depends_on("node-js", type="build", when="@:v1_07_05")
     depends_on("python", type="build")
+    depends_on("art-suite")
 
     depends_on("cetmodules@3.26.00:", type="build")
 

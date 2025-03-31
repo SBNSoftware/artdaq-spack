@@ -80,7 +80,7 @@ class OtsdaqSuite(BundlePackage):
         depends_on("otsdaq-prepmodernization@v3_00_00", when="+prep")
 
         # External Dependencies not in art-suite or artdaq-suite
-        depends_on("libpqxx@7.6.0")
+        depends_on("libpqxx@7.10.0")
         depends_on("xdaq@16_35_0_4")
         depends_on("reredirect@0.3")
     with when("@v2_10_00"):

@@ -73,6 +73,7 @@ class OtsdaqPrepmodernization(CMakePackage):
     depends_on("otsdaq-utilities@v3_00_00:,develop", when="@v3_00_00:,develop")
     depends_on("otsdaq-components@:v3_00_00", when="@:v3_00_00")
     depends_on("otsdaq-components@v3_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("artdaq-suite")
 
     def cmake_args(self):
         args = [

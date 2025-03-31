@@ -70,6 +70,7 @@ class ArtdaqMfextensions(CMakePackage):
     depends_on("curl", when="+curl")
 
     depends_on("trace+mf")
+    depends_on("art-suite")
 
     with when('@:v1_08_07'):
         def cmake_args(self):

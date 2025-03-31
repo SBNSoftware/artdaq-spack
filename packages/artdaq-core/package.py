@@ -69,6 +69,7 @@ class ArtdaqCore(CMakePackage):
     # art dependencies
     depends_on("canvas-root-io cxxstd=17", when="cxxstd=17")
     depends_on("canvas-root-io cxxstd=20", when="cxxstd=20")
+    depends_on("art-suite")
     depends_on("cetmodules@3.26.00:", type="build")
 
     # artdaq dependencies
