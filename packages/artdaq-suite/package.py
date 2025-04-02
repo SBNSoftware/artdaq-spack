@@ -13,6 +13,7 @@ class ArtdaqSuite(BundlePackage):
 
     homepage="https://github.com/art-daq"
 
+    version("develop")
     version("v4_00_00")
     version("v3_16_00")
     version("v3_15_00")
@@ -43,6 +44,25 @@ class ArtdaqSuite(BundlePackage):
     variant("epics", default=True, description="Install artdaq EPICS plugin")
     variant("pcp", default=True, description="Install artdaq PCP MMV plugin")
 
+    with when("@develop"):
+        depends_on("trace")
+        depends_on("artdaq-core")
+        depends_on("artdaq-utilities")
+        depends_on("artdaq-mfextensions")
+        depends_on("artdaq")
+        depends_on("artdaq-epics-plugin", when="+epics")
+        depends_on("artdaq-daqinterface")
+        depends_on("artdaq-core-demo", when="+demo")
+        depends_on("artdaq-database", when="+db")
+        depends_on("artdaq-demo", when="+demo")
+
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl@7.76.1")
+        depends_on("qt@5.15.15 +gui+shared")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics"))
     with when("@v4_00_00"):
         depends_on("trace@v3_18_00")
         depends_on("artdaq-core@v4_00_00")
@@ -61,7 +81,7 @@ class ArtdaqSuite(BundlePackage):
         depends_on("curl@7.76.1")
         depends_on("qt@5.15.15 +gui+shared")
         depends_on("librdkafka@2.8.0")
-        depends_on("epics-base@7.0.6.1")
+        depends_on("epics-base@7.0.6.1", when="+epics")
     with when("@v3_16_00"):
         depends_on("trace@v3_17_17")
         depends_on("artdaq-core@v3_13_00")
