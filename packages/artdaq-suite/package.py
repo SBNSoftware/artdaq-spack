@@ -62,7 +62,7 @@ class ArtdaqSuite(BundlePackage):
         depends_on("curl@7.76.1")
         depends_on("qt@5.15.15 +gui+shared")
         depends_on("librdkafka@2.8.0")
-        depends_on("epics-base@7.0.6.1", when="+epics"))
+        depends_on("epics-base@7.0.6.1", when="+epics")
     with when("@v4_00_00"):
         depends_on("trace@v3_18_00")
         depends_on("artdaq-core@v4_00_00")
