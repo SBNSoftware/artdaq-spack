@@ -48,7 +48,7 @@ class ArtdaqUtilities(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_08_04"
+        when="@:v1_08_03"
     )
     variant(
         "cxxstd",

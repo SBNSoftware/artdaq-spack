@@ -55,7 +55,7 @@ class Artdaq(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v3_12_04"
+        when="@:v3_12_03"
     )
     variant(
         "cxxstd",
@@ -75,11 +75,11 @@ class Artdaq(CMakePackage):
     depends_on("swig", type="build")
     depends_on("node-js", type="build", when="@:v3_12_06")
 
-    depends_on("artdaq-core@:v4_00_00", when="@:v4_00_00")
+    depends_on("artdaq-core@:v3_99_00", when="@:v3_99_00")
     depends_on("artdaq-core@v4_00_00:,develop", when="@v4_00_00:,develop")
-    depends_on("artdaq-utilities@:v2_00_00", when="@:v4_00_00")
+    depends_on("artdaq-utilities@:v1_99_00", when="@:v3_99_00")
     depends_on("artdaq-utilities@v2_00_00:,develop", when="@v4_00_00:,develop")
-    depends_on("artdaq-mfextensions@:v2_00_00", when="@:v4_00_00")
+    depends_on("artdaq-mfextensions@:v1_99_00", when="@:v3_99_00")
     depends_on("artdaq-mfextensions@v2_00_00:,develop", when="@v4_00_00:,develop")
     depends_on("art-suite")
 

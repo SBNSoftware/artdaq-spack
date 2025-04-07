@@ -52,7 +52,7 @@ class Otsdaq(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v2_06_10"
+        when="@:v2_06_09"
     )
     variant(
         "cxxstd",
@@ -68,12 +68,12 @@ class Otsdaq(CMakePackage):
     depends_on("xdaq")
     depends_on("reredirect", when="@v2_09_00:")
 
-    depends_on("artdaq@:v4_00_00", when="@:v3_00_00")
+    depends_on("artdaq@:v3_99_00", when="@:v2_99_00")
     depends_on("artdaq@v4_00_00:,develop", when="@v3_00_00:,develop")
     depends_on("artdaq-database~builtin_fhicl")
-    depends_on("artdaq-database@:v2_00_00", when="@:v3_00_00")
+    depends_on("artdaq-database@:v1_99_00", when="@:v2_99_00")
     depends_on("artdaq-database@v2_00_00:,develop", when="@v3_00_00:,develop")
-    depends_on("artdaq-daqinterface@:v4_00_00", when="@:v3_00_00")
+    depends_on("artdaq-daqinterface@:v3_99_00", when="@:v2_99_00")
     depends_on("artdaq-daqinterface@v4_00_00:,develop", when="@v3_00_00:,develop")
     depends_on("artdaq-suite")
 

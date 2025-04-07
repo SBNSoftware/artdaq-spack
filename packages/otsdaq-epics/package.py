@@ -46,7 +46,7 @@ class OtsdaqEpics(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v2_06_10"
+        when="@:v2_06_09"
     )
     variant(
         "cxxstd",
@@ -62,9 +62,9 @@ class OtsdaqEpics(CMakePackage):
     depends_on("epics-base")
     depends_on("libpqxx")
 
-    depends_on("otsdaq@:v3_00_00", when="@:v3_00_00")
+    depends_on("otsdaq@:v2_99_00", when="@:v2_99_00")
     depends_on("otsdaq@v3_00_00:,develop", when="@v3_00_00:,develop")
-    depends_on("otsdaq-utilities@:v3_00_00", when="@:v3_00_00")
+    depends_on("otsdaq-utilities@:v2_99_00", when="@:v2_99_00")
     depends_on("otsdaq-utilities@v3_00_00:,develop", when="@v3_00_00:,develop")
     depends_on("artdaq-suite")
 

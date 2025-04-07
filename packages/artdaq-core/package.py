@@ -52,7 +52,7 @@ class ArtdaqCore(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v3_09_12"
+        when="@:v3_09_11"
     )
     variant(
         "cxxstd",

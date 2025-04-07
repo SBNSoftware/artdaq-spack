@@ -45,7 +45,7 @@ class Xdaq(MakefilePackage):
     version("15_24_0_3", sha256="18221218889832cdf50d267e986e541e7ba499915d6e2d521691135240976b70")
     version("15_23_0_3", sha256="6a17a0b7a58e6fc3c82bd83006fefca34e3aee8b275ff45948e2c6905fd6def4")
 
-    conflicts("%gcc@13.1.0", when="@:16_31_0_4")
+    conflicts("%gcc@13.1.0", when="@:16_31_0_3")
 
     depends_on("autoconf", type="build")
     depends_on("automake", type="build")

@@ -51,7 +51,7 @@ class ArtdaqDemo(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v3_12_04"
+        when="@:v3_12_03"
     )
     variant(
         "cxxstd",
@@ -65,9 +65,9 @@ class ArtdaqDemo(CMakePackage):
 
     depends_on("cetmodules@3.26.00:", type="build")
 
-    depends_on("artdaq@:v4_00_00", when="@:v4_00_00")
+    depends_on("artdaq@:v3_99_00", when="@:v3_99_00")
     depends_on("artdaq@v4_00_00:,develop", when="@v4_00_00:,develop")
-    depends_on("artdaq-core-demo@:v2_00_00", when="@:v4_00_00")
+    depends_on("artdaq-core-demo@:v1_99_00", when="@:v3_99_00")
     depends_on("artdaq-core-demo@v2_00_00:,develop", when="@v4_00_00:,develop")
     depends_on("art-suite")
 

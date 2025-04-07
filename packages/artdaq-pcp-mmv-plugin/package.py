@@ -44,7 +44,7 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_03_04"
+        when="@:v1_03_03"
     )
     variant(
         "cxxstd",

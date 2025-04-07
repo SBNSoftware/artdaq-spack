@@ -49,7 +49,7 @@ class ArtdaqEpicsPlugin(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_05_04"
+        when="@:v1_05_03"
     )
     variant(
         "cxxstd",
@@ -64,7 +64,7 @@ class ArtdaqEpicsPlugin(CMakePackage):
     depends_on("cetmodules@3.26.00:", type="build")
     depends_on("epics-base")
 
-    depends_on("artdaq-utilities@:v2_00_00", when="@:v2_00_00")
+    depends_on("artdaq-utilities@:v1_99_00", when="@:v1_99_00")
     depends_on("artdaq-utilities@v2_00_00:,develop", when="@v2_00_00:,develop")
     depends_on("art-suite")
 
