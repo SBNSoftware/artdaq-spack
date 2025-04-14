@@ -49,13 +49,14 @@ class OtsdaqSuite(BundlePackage):
     )
     variant(
         "artdaq",
-        default="40000",
-        values = ("0","40000"),
+        default="40100",
+        values = ("0","40000","40100"),
         multi=False,
         description="Artdaq suite version to use",
         when="@v3_00_00:"
     )
 
+    depends_on("artdaq-suite@v4_01_00", when="artdaq=40100")
     depends_on("artdaq-suite@v4_00_00", when="artdaq=40000")
     depends_on("artdaq-suite@v3_16_00", when="artdaq=31600")
     depends_on("artdaq-suite@v3_15_00", when="artdaq=31500")
