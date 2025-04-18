@@ -129,7 +129,7 @@ class ArtSuite(BundlePackage):
         depends_on("boost@1.82.0+atomic+chrono+date_time+exception+filesystem+graph+iostreams+json+locale+log+math+multithreaded+program_options+random+regex+serialization+shared+signals+system+test+thread+timer+wave cxxstd=20") # Sum of all needed libraries...
         depends_on("canvas@3.16.03 cxxstd=20")
         depends_on("canvas-root-io@1.13.03 cxxstd=20", when="+root")
-        depends_on("catch2@3.3.2") 
+        depends_on("catch2@3.3.2")
         depends_on("cetlib@3.18.02 cxxstd=20")
         depends_on("cetlib-except@1.09.01 cxxstd=20")
         depends_on("cetmodules@3.22.02")
@@ -143,10 +143,10 @@ class ArtSuite(BundlePackage):
         depends_on("py-numpy@1.24.3")
         depends_on("openblas@0.3.23")
         depends_on("postgresql@15.2") # 15.3 not published to Spack
-        depends_on("py-pybind11@2.10.4") 
+        depends_on("py-pybind11@2.10.4")
         depends_on("pythia6@6.4.28")
         depends_on("python@3.9.15")
-        depends_on("range-v3@0.12.0") 
+        depends_on("range-v3@0.12.0")
         depends_on("root@6.28.10 cxxstd=20", when="+root")
         depends_on("sqlite@3.40.1")
         depends_on("tbb@2021.9.0")
@@ -159,7 +159,7 @@ class ArtSuite(BundlePackage):
         depends_on("boost@1.82.0+atomic+chrono+date_time+exception+filesystem+graph+iostreams+json+locale+log+math+multithreaded+program_options+random+regex+serialization+shared+signals+system+test+thread+timer+wave cxxstd=20") # Sum of all needed libraries...
         depends_on("canvas@3.16.01 cxxstd=20")
         depends_on("canvas-root-io@1.13.01 cxxstd=20", when="+root")
-        depends_on("catch2@3.3.2") 
+        depends_on("catch2@3.3.2")
         depends_on("cetlib@3.18.00 cxxstd=20")
         depends_on("cetlib-except@1.09.01 cxxstd=20")
         depends_on("cetmodules@3.22.02")
@@ -173,10 +173,10 @@ class ArtSuite(BundlePackage):
         depends_on("py-numpy@1.24.3")
         depends_on("openblas@0.3.23")
         depends_on("postgresql@15.2") # 15.3 not published to Spack
-        depends_on("py-pybind11@2.10.4") 
+        depends_on("py-pybind11@2.10.4")
         depends_on("pythia6@6.4.28")
         depends_on("python@3.9.15")
-        depends_on("range-v3@0.12.0") 
+        depends_on("range-v3@0.12.0")
         depends_on("root@6.28.06 cxxstd=20", when="+root")
         depends_on("sqlite@3.40.1")
         depends_on("tbb@2021.9.0")
