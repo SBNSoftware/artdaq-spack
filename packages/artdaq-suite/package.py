@@ -79,7 +79,7 @@ class ArtdaqSuite(BundlePackage):
         # External Dependencies not in art-suite
         depends_on("swig@4.1.1")
         depends_on("xmlrpc-c@1.51.06 +curl")
-        depends_on("curl@7.76.1")
+        #depends_on("curl@7.76.1")
         depends_on("qt@5.15.15 +gui+shared")
         depends_on("librdkafka@2.8.0")
         depends_on("epics-base@7.0.6.1", when="+epics")
@@ -98,7 +98,7 @@ class ArtdaqSuite(BundlePackage):
         # External Dependencies not in art-suite
         depends_on("swig@4.1.1")
         depends_on("xmlrpc-c@1.51.06 +curl")
-        depends_on("curl@7.76.1")
+        #depends_on("curl@7.76.1")
         depends_on("qt@5.15.15 +gui+shared")
         depends_on("librdkafka@2.8.0")
         depends_on("epics-base@7.0.6.1", when="+epics")
@@ -156,8 +156,9 @@ class ArtdaqSuite(BundlePackage):
         depends_on("artdaq-demo@v3_13_01", when="+demo")
         depends_on("artdaq-epics-plugin@v1_06_01", when="+epics")
         depends_on("artdaq-mfextensions@v1_09_01")
-        depends_on("artdaq-pcp-mmv-plugin@v1_04_00", when="+pcp")
+        #depends_on("artdaq-pcp-mmv-plugin@v1_04_00", when="+pcp")
         depends_on("artdaq-utilities@v1_09_01")
+        depends_on("cetmodules@3.26.00")
         depends_on("trace@v3_17_13")
     with when("@v3_13_00"):
         depends_on("artdaq@v3_13_00")
