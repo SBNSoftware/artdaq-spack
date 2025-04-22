@@ -78,3 +78,5 @@ class ArtdaqDatabase(CMakePackage):
     def cmake_args(self):
         args = [self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")]
         return args
+
+    patch("patch/v1_10_00.path", when="@v1_10_00")
