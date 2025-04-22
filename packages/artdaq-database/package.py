@@ -72,3 +72,5 @@ class ArtdaqDatabase(CMakePackage):
         args = [self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
                 "-DUSE_FHICLCPP={0}".format("TRUE" if "+builtin_fhicl" in self.spec else "FALSE")]
         return args
+
+    patch("patch/v1_10_00.path", when="@v1_10_00")
