@@ -29,6 +29,7 @@ class ArtdaqSuite(BundlePackage):
     version("v3_15_00")
     version("v3_14_01")
     version("v3_14_00")
+    version("v3_13_02")
     version("v3_13_01")
     version("v3_13_00")
     version("v3_12_07")
