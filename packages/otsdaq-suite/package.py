@@ -69,7 +69,7 @@ class OtsdaqSuite(BundlePackage):
     depends_on("artdaq-suite@v3_12_04", when="artdaq=31204")
     depends_on("artdaq-suite@v3_12_03", when="artdaq=31203")
     depends_on("artdaq-suite@v3_12_02", when="artdaq=31202")
-    depends_on("artdaq-suite+db+epics~demo~pcp")
+    depends_on("artdaq-suite+db+epics")
 
     variant("demo", default=False, description="Install otsdaq-demo")
     variant("prep", default=False, description="Install PREP modernization library")
