@@ -66,11 +66,12 @@ class ArtdaqCore(CMakePackage):
     )
 
     variant("doc", default=False, description="Build documentation with Doxygen.")
+    variant("bundle", default=True, description="Use the art-suite bundle to fix dependency versions")
 
     # art dependencies
     depends_on("canvas-root-io cxxstd=17", when="cxxstd=17")
     depends_on("canvas-root-io cxxstd=20", when="cxxstd=20")
-    depends_on("art-suite")
+    depends_on("art-suite", when="+bundle")
     depends_on("cetmodules@3.26.00:", type="build")
 
     # artdaq dependencies
