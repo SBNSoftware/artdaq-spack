@@ -29,6 +29,14 @@ class ArtdaqSuite(BundlePackage):
     version("v3_12_03")
     version("v3_12_02")
 
+    variant(
+        "cxxstd",
+        default="17",
+        values=("17", "20"),
+        multi=False,
+        description="Use the specified C++ standard when building.",
+    )
+
     squals = ("112", "117", "118", "120", "120a", "120b", "122", "123", "124", "126", "128", "130", "131", "132")
     variant(
         "s",
