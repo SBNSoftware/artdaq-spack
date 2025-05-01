@@ -38,27 +38,19 @@ class ArtdaqSuite(BundlePackage):
     version("v3_12_03")
     version("v3_12_02")
 
-    squals = (
-        "112",
-        "117",
-        "118",
-        "120",
-        "120a",
-        "120b",
-        "122",
-        "123",
-        "124",
-        "126",
-        "128",
-        "130",
-        "131",
-        "132",
-        "133",
-        "134",
+    variant(
+        "cxxstd",
+        default="17",
+        values=("17", "20"),
+        multi=False,
+        description="Use the specified C++ standard when building.",
     )
+
+    squals = ("112", "117", "118", "120", "120a", "120b", "122", "123", "124", "126", "128", "130", "131", "132", "133", "134")
+
     variant(
         "s",
-        default="134",
+        default="132",
         values=("0",) + squals,
         multi=False,
         description="Art suite version to use",
@@ -96,7 +88,7 @@ class ArtdaqSuite(BundlePackage):
         depends_on("swig")
         depends_on("xmlrpc-c +curl")
         depends_on("curl")
-        depends_on("qt")
+        depends_on("qt +gui+shared")
         depends_on("librdkafka")
         depends_on("epics-base", when="+epics")
     with when("@v4_08_00"):
