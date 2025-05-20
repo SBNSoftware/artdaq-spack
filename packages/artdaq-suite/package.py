@@ -38,7 +38,7 @@ class ArtdaqSuite(BundlePackage):
     )
     for squal in squals:
         depends_on(f"art-suite@s{squal}+root", when=f"s={squal}")
-    depends_on("art-suite+root", when="s=0")
+    depends_on("art-suite +root")
 
     variant("demo", default=False, description="Also install artdaq_demo components")
     variant("db", default=True, description="Install artdaq_database")
