@@ -14,6 +14,7 @@ class ArtdaqSuite(BundlePackage):
     homepage="https://github.com/art-daq"
 
     version("develop")
+    version("v4_02_00")
     version("v4_01_00")
     version("v4_00_00")
     version("v3_16_00")
