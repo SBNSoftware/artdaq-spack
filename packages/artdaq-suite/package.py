@@ -44,7 +44,7 @@ class ArtdaqSuite(BundlePackage):
     variant("demo", default=False, description="Also install artdaq_demo components")
     variant("db", default=True, description="Install artdaq_database")
     variant("epics", default=True, description="Install artdaq EPICS plugin")
-    variant("pcp", default=True, description="Install artdaq PCP MMV plugin")
+    variant("pcp", default=False, description="Install artdaq PCP MMV plugin")
 
     with when("@develop"):
         depends_on("trace")
