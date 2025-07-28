@@ -69,6 +69,7 @@ class Otsdaq(CMakePackage):
     depends_on("cetmodules@3.26.00:", type="build")
     depends_on("xdaq")
     depends_on("reredirect", when="@v2_09_00:")
+    depends_on("py-rich-click", when="@v3:")
 
     depends_on("artdaq@:v3_99_00", when="@:v2_99_00")
     depends_on("artdaq@v4_00_00:,develop", when="@v3_00_00:,develop")
