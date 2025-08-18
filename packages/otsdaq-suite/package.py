@@ -13,6 +13,7 @@ class OtsdaqSuite(BundlePackage):
     """
 
     version("develop")
+    version("v3_03_00")
     version("v3_02_00")
     version("v3_01_00")
     version("v3_00_00")
@@ -50,13 +51,14 @@ class OtsdaqSuite(BundlePackage):
     )
     variant(
         "artdaq",
-        default="40200",
-        values = ("0","40000","40100","40200"),
+        default="40300",
+        values = ("0","40000","40100","40200", "40300"),
         multi=False,
         description="Artdaq suite version to use",
         when="@v3_00_00:"
     )
 
+    depends_on("artdaq-suite@v4_03_00", when="artdaq=40300")
     depends_on("artdaq-suite@v4_02_00", when="artdaq=40200")
     depends_on("artdaq-suite@v4_01_00", when="artdaq=40100")
     depends_on("artdaq-suite@v4_00_00", when="artdaq=40000")
@@ -89,6 +91,17 @@ class OtsdaqSuite(BundlePackage):
         depends_on("libpqxx")
         depends_on("xdaq")
         depends_on("reredirect")
+    with when("@v3_03_00"):
+        depends_on("otsdaq@v3_03_00")
+        depends_on("otsdaq-utilities@v3_02_00")
+        depends_on("otsdaq-components@v3_01_00")
+        depends_on("otsdaq-epics@v3_01_00")
+        depends_on("otsdaq-demo@v3_03_00", when="+demo")
+        depends_on("otsdaq-prepmodernization@v3_00_00", when="+prep")
+        # External Dependencies not in art-suite or artdaq-suite
+        depends_on("libpqxx@7.10.0")
+        depends_on("xdaq@16_35_0_4")
+        depends_on("reredirect@0.3")
     with when("@v3_02_00"):
         depends_on("otsdaq@v3_02_00")
         depends_on("otsdaq-utilities@v3_01_00")
