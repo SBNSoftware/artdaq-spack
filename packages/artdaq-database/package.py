@@ -69,6 +69,8 @@ class ArtdaqDatabase(CMakePackage):
 
     depends_on("trace+mf")
 
+    variant("builtin_fhicl", default=False)
+
     def cmake_args(self):
         args = [self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")
                 ]
