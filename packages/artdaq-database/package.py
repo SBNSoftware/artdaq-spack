@@ -53,7 +53,6 @@ class ArtdaqDatabase(CMakePackage):
         description="Use the specified C++ standard when building.",
         when="@v1_07_04:"
     )
-    variant("builtin_fhicl", default=True, description="Use built-in FHiCL-cpp with database fixes")
 
     depends_on("curl")
     depends_on("boost+filesystem+program_options")
@@ -61,7 +60,9 @@ class ArtdaqDatabase(CMakePackage):
     depends_on("node-js", type="build", when="@:v1_07_05")
     depends_on("python", type="build")
     depends_on("art-suite")
+    depends_on("fhicl-cpp+db")
 
+    depends_on("mongo-cxx-driver+dots_in_keys", type="build")
     depends_on("cetmodules@3.26.00:", type="build")
 
     depends_on("cetlib", when="~builtin_fhicl")
@@ -69,6 +70,6 @@ class ArtdaqDatabase(CMakePackage):
     depends_on("trace+mf")
 
     def cmake_args(self):
-        args = [self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
-                "-DUSE_FHICLCPP={0}".format("TRUE" if "+builtin_fhicl" in self.spec else "FALSE")]
+        args = [self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")
+                ]
         return args
