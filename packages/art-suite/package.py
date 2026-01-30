@@ -14,7 +14,7 @@ class ArtSuite(BundlePackage):
 
     homepage="https://github.com/art-framework-suite/"
 
-    version("s132.1")
+    version("s133")
     version("s132")
     version("s131")
     version("s130")
@@ -32,7 +32,7 @@ class ArtSuite(BundlePackage):
 
     variant("root", default=True, description="Also bring in the ROOT IO packages")
 
-    with when("@s132.1"):
+    with when("@s133"):
         depends_on("cmake@3.30.5:")
 
         depends_on("art@3.15.00 cxxstd=20")
