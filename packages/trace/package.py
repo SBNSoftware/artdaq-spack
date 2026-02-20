@@ -11,10 +11,12 @@ from llnl.util.filesystem import join_path
 
 from spack.package import *
 
+
 def sanitize_environments(env, *vars):
     for var in vars:
         env.prune_duplicate_paths(var)
         env.deprioritize_system_paths(var)
+
 
 class Trace(CMakePackage):
     """TRACE is yet another logging (time stamp) tool, but it allows
@@ -64,7 +66,10 @@ class Trace(CMakePackage):
     depends_on("messagefacility", when="+mf")
 
     def cmake_args(self):
-        args = ["-DWANT_KMOD={0}".format("TRUE" if "+kmod" in self.spec else "FALSE"),"-DWANT_MF={0}".format("TRUE" if "+mf" in self.spec else "FALSE")]
+        args = [
+            "-DWANT_KMOD={0}".format("TRUE" if "+kmod" in self.spec else "FALSE"),
+            "-DWANT_MF={0}".format("TRUE" if "+mf" in self.spec else "FALSE"),
+        ]
         return args
 
     def setup_build_environment(self, env):
@@ -83,7 +88,7 @@ class Trace(CMakePackage):
 
         # Source the functions
         file_to_source = self.prefix.join("bin/trace_functions.sh")
-        print(f'source {file_to_source}')
+        print(f"source {file_to_source}")
 
         # Binaries.
         env.prepend_path("PATH", os.path.join(prefix, "bin"))
@@ -110,7 +115,7 @@ class Trace(CMakePackage):
 
         # Source the functions
         file_to_source = self.prefix.join("bin/trace_functions.sh")
-        print(f'source {file_to_source}')
+        print(f"source {file_to_source}")
 
         # Binaries.
         env.prepend_path("PATH", os.path.join(prefix, "bin"))

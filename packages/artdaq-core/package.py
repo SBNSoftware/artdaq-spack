@@ -14,6 +14,7 @@ def sanitize_environments(env, *vars):
         env.prune_duplicate_paths(var)
         env.deprioritize_system_paths(var)
 
+
 class ArtdaqCore(CMakePackage):
     """The toolkit currently provides functionality for data transfer,
     event building, event reconstruction and analysis (using the art analysis
@@ -56,7 +57,7 @@ class ArtdaqCore(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v3_09_11"
+        when="@:v3_09_11",
     )
     variant(
         "cxxstd",
@@ -65,11 +66,16 @@ class ArtdaqCore(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v3_09_12:"
+        when="@v3_09_12:",
     )
 
     variant("doc", default=False, description="Build documentation with Doxygen.")
-    variant("bundle", default=True, sticky=True, description="Use the art-suite bundle to fix dependency versions")
+    variant(
+        "bundle",
+        default=True,
+        sticky=True,
+        description="Use the art-suite bundle to fix dependency versions",
+    )
 
     # art dependencies
     depends_on("canvas-root-io cxxstd=17", when="cxxstd=17")

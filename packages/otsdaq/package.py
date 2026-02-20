@@ -14,6 +14,7 @@ def sanitize_environments(env, *vars):
         env.prune_duplicate_paths(var)
         env.deprioritize_system_paths(var)
 
+
 class Otsdaq(CMakePackage):
     """The toolkit currently provides functionality for data transfer,
     event building, event reconstruction and analysis (using the art analysis
@@ -60,7 +61,7 @@ class Otsdaq(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v2_06_09"
+        when="@:v2_06_09",
     )
     variant(
         "cxxstd",
@@ -69,7 +70,7 @@ class Otsdaq(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v2_06_10:"
+        when="@v2_06_10:",
     )
 
     depends_on("cetmodules@3.26.00:", type="build")
@@ -98,7 +99,6 @@ class Otsdaq(CMakePackage):
         else:
             self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
         return args
-
 
     def setup_run_environment(self, env):
         prefix = self.prefix

@@ -14,6 +14,7 @@ def sanitize_environments(env, *vars):
         env.prune_duplicate_paths(var)
         env.deprioritize_system_paths(var)
 
+
 class ArtdaqEpicsPlugin(CMakePackage):
     """The toolkit currently provides functionality for data transfer,
     event building, event reconstruction and analysis (using the art analysis
@@ -50,7 +51,7 @@ class ArtdaqEpicsPlugin(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_05_03"
+        when="@:v1_05_03",
     )
     variant(
         "cxxstd",
@@ -59,7 +60,7 @@ class ArtdaqEpicsPlugin(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v1_05_04:"
+        when="@v1_05_04:",
     )
 
     depends_on("cetmodules@3.26.00:", type="build")

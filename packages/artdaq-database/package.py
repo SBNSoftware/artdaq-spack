@@ -44,16 +44,16 @@ class ArtdaqDatabase(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_07_03"
+        when="@:v1_07_03",
     )
     variant(
         "cxxstd",
         default="20",
-        values=("17","20"),
+        values=("17", "20"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v1_07_04:"
+        when="@v1_07_04:",
     )
 
     depends_on("curl")
@@ -74,6 +74,5 @@ class ArtdaqDatabase(CMakePackage):
     variant("builtin_fhicl", default=False)
 
     def cmake_args(self):
-        args = [self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")
-                ]
+        args = [self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")]
         return args
