@@ -13,6 +13,7 @@ class OtsdaqSuite(BundlePackage):
     """The Off-The-Shelf DAQ suite, otsdaq, providing graphical wrappers for artdaq"""
 
     version("develop")
+    version("v3_06_00")
     version("v3_05_01")
     version("v3_05_00")
     version("v3_04_02")
@@ -86,7 +87,7 @@ class OtsdaqSuite(BundlePackage):
     )
     variant(
         "artdaq",
-        default="40500",
+        default="40600",
         values=(
             "0",
             "40000",
@@ -97,12 +98,14 @@ class OtsdaqSuite(BundlePackage):
             "40400",
             "40401",
             "40500",
+            "40600",
         ),
         multi=False,
         description="Artdaq suite version to use",
         when="@v3_00_00:",
     )
 
+    depends_on("artdaq-suite@v4_06_00", when="artdaq=40600")
     depends_on("artdaq-suite@v4_05_00", when="artdaq=40500")
     depends_on("artdaq-suite@v4_04_01", when="artdaq=40401")
     depends_on("artdaq-suite@v4_04_00", when="artdaq=40400")
@@ -145,6 +148,17 @@ class OtsdaqSuite(BundlePackage):
         depends_on("libpqxx")
         depends_on("xdaq")
         depends_on("reredirect")
+    with when("@v3_06_00"):
+        depends_on("otsdaq@v3_06_00")
+        depends_on("otsdaq-utilities@v3_05_00")
+        depends_on("otsdaq-components@v3_03_01")
+        depends_on("otsdaq-epics@v3_03_00")
+        depends_on("otsdaq-demo@v3_06_00", when="+demo")
+        depends_on("otsdaq-prepmodernization@v3_02_00", when="+prep")
+        # External Dependencies not in art-suite or artdaq-suite
+        depends_on("libpqxx@7.10.0")
+        depends_on("xdaq@16_35_0_4")
+        depends_on("reredirect@0.3")
     with when("@v3_05_01"):
         depends_on("otsdaq@v3_05_01")
         depends_on("otsdaq-utilities@v3_04_01")
