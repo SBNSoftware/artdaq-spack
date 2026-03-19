@@ -20,6 +20,10 @@ class FhiclCpp(CMakePackage, FnalGithubPackage):
     version_patterns = ["v4_15_03"]
 
     version(
+        "4.19.02",
+        sha256="62a2fa69da52f3d5f00305de00b5c64d0cfd7ba3714cbfc0f016be1e6b82338a",
+    )
+    version(
         "4.19.01",
         sha256="93ded157a40a45601095a5c5627337ac2ad35f76d08714d28ad2e05bc292f4e5",
     )
@@ -57,7 +61,8 @@ class FhiclCpp(CMakePackage, FnalGithubPackage):
     )
     version("develop", branch="develop", get_full_repo=True)
 
-    cxxstd_variant("17", "20", "23", default="17", sticky=True)
+    cxxstd_variant("17", "20", "23", default="17", sticky=True, when="@:4.18.99")
+    cxxstd_variant("20", "23", default="20", sticky=True, when="@4.19.00:")
     conflicts("cxxstd=17", when="@4.19.00:")
 
     depends_on("boost@:1.82", when="@:4.19")
@@ -79,7 +84,8 @@ class FhiclCpp(CMakePackage, FnalGithubPackage):
     with when("+db"):
         patch("fhicl-cpp-v4_17_00.patch", when="@4.17.00:4.17.99")
         patch("fhicl-cpp-v4_18_00.patch", when="@4.18.00:4.18.99")
-        patch("fhicl-cpp-v4_19_00.patch", when="@4.19.00:")
+        patch("fhicl-cpp-v4_19_00.patch", when="@4.19.00:4.19.01")
+        patch("fhicl-cpp-v4_19_02.patch", when="@4.19.02:")
 
     if "SPACK_CMAKE_GENERATOR" in os.environ:
         generator = os.environ["SPACK_CMAKE_GENERATOR"]
