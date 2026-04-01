@@ -26,6 +26,12 @@ class ArtdaqDaqinterface(CMakePackage):
         return url.format(version)
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v4_05_00", commit="59b343817539170a62bf0a20280ef01cf7d242e2")
+    version("v4_04_00", commit="406bc84ffcb3c2c7b749d7e4eeab065d4404fbf1")
+    version("v4_03_01", commit="c5f510441c256c1b6f6b532dc8b7db7ed8609448")
+    version("v4_03_00", commit="8e2c60f9546a8c209bdf444bd186653b865f226a")
+    version("v4_02_00", commit="61c5a10803301fccb27bd0b03fc664cac7a757c6")
+    version("v4_01_00", commit="0f0cc2e2f98551c1948c19afd542e8e875b3df6e")
     version("v4_00_00", commit="578923aa70322fcfc2906f85e9110d7ba573998e")
     version("v3_16_00", commit="b134b71dda67b747d071e694fc021c2d8461b1ce")
     version("v3_15_00", commit="ceb0f3c8c67b9f2042dbff8d3a804fad91bfab90")
@@ -54,3 +60,4 @@ class ArtdaqDaqinterface(CMakePackage):
 
     patch("patch/v3_13_00.path", when="@v3_13_00")
     patch("patch/v3_14_00a.path", when="@v3_14_00")
+    patch("patch/v4_05_00.path", when="@v4_05_00")

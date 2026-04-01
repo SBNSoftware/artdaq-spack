@@ -1,0 +1,416 @@
+diff --git a/rc/control/bookkeeping.py b/rc/control/bookkeeping.py
+index 87d0177..894da18 100644
+--- a/rc/control/bookkeeping.py
++++ b/rc/control/bookkeeping.py
+@@ -833,7 +833,7 @@ def bookkeeping_for_fhicl_documents_artdaq_v3_base(self):
+                     "BoardReader" in procinfo.name
+                     and procinfo.label not in nonsending_boardreaders
+                 ):
+-                    for token in ["[Ww]indow", "[Ss]ingle", "[Bb]uffer"]:
++                    for token in ["[Ww]indow", "[Ss]ingle", "[Bb]uffer", "[Ss]equence"]:
+                         res = re.search(
+                             r"\n\s*request_mode\s*:\s*\"?%s\"?" % (token),
+                             procinfo.fhicl_used,
+@@ -890,6 +890,20 @@ def bookkeeping_for_fhicl_documents_artdaq_v3_base(self):
+                     multicast_interface_ip = list(
+                         private_networks_seen_by_processes_involved_in_requests
+                     )[0]
++
++                    multicast_interface_ip_to_use = os.getenv('MULTICAST_INTERFACE_IP_TO_USE')
++                    if len(list(private_networks_seen_by_processes_involved_in_requests)) > 1:
++                        if multicast_interface_ip_to_use is None:
++                            self.print_log('w', 'More than one private network visible to all processes: '
++                                + ', '.join(list(private_networks_seen_by_processes_involved_in_requests))
++                                + ', do not know which to use, defaulting to: ' + multicast_interface_ip
++                                + '; consider defining MULTICAST_INTERFACE_IP_TO_USE env variable')
++                        else:
++                            multicast_interface_ip = multicast_interface_ip_to_use
++                            self.print_log('i', 'More than one private network visible to all processes: '
++                                + ', '.join(list(private_networks_seen_by_processes_involved_in_requests))
++                                + ', using MULTICAST_INTERFACE_IP_TO_USE env variable: ' + multicast_interface_ip)
++
+                     for process_involved_in_request in processes_involved_in_requests:
+                         for i_proc in range(len(self.procinfos)):
+                             if (
+diff --git a/rc/control/config_functions_database_v2.py b/rc/control/config_functions_database_v2.py
+index 2e6a90c..7ee51e8 100644
+--- a/rc/control/config_functions_database_v2.py
++++ b/rc/control/config_functions_database_v2.py
+@@ -5,13 +5,14 @@
+ 
+ import os
+ import sys
++import re
+ 
+ sys.path.append(os.environ["ARTDAQ_DAQINTERFACE_DIR"])
+ 
+ dbdirs = [
+     dbdir
+     for dbdir in os.environ["PYTHONPATH"].split(":")
+-    if "/artdaq_database/" in dbdir
++    if re.search(r"/artdaq[-_]database/", dbdir)
+ ]
+ assert (
+     len(dbdirs) == 1
+@@ -25,7 +26,6 @@ from rc.control.utilities import fhiclize_document
+ import shutil
+ from shutil import copyfile
+ 
+-import re
+ import os
+ import string
+ from time import time
+diff --git a/rc/control/daqinterface.py b/rc/control/daqinterface.py
+index 59e0003..e5ecde2 100755
+--- a/rc/control/daqinterface.py
++++ b/rc/control/daqinterface.py
+@@ -58,6 +58,7 @@ from rc.control.utilities import obtain_messagefacility_fhicl
+ from rc.control.utilities import record_directory_info
+ from rc.control.utilities import get_messagefacility_template_filename
+ from rc.control.utilities import RaisingThread
++from rc.control.utilities_spackdev import fill_package_versions_sbn_devarea_versioning
+ 
+ try:
+     import python_artdaq
+@@ -2052,6 +2053,8 @@ class DAQInterface(Component):
+                 )
+ 
+     def fill_package_versions(self, packages):
++        if os.environ.get("USE_SBN_DEVAREA_VERSIONING", "").strip().lower() == "true":
++            fill_package_versions_sbn_devarea_versioning(self, packages)
+ 
+         cmd = ""
+         needed_packages = []
+@@ -2066,7 +2069,7 @@ class DAQInterface(Component):
+             return
+ 
+         if self.spackdir != None:
+-            cmd = "%s ; . %s; spack find | sed -r -n 's/^(%s)@(\\S+).*/\\1 \\2/p'" % (
++            cmd = "%s ; . %s; spack find -d --loaded | sed -r -n 's/^\\s+(%s)@(\\S+).*/\\1 \\2/p'" % (
+                 ";".join(get_setup_commands(self.spackdir)),
+                 self.daq_setup_script,
+                 "|".join(needed_packages),
+@@ -2087,6 +2090,16 @@ class DAQInterface(Component):
+             stdoutlines = out.strip().split("\n")
+             stderrlines = err.strip().split("\n")
+ 
++            unwanted_warnings = [
++                'WARNING: unable to determine tty. While this will not affect',
++                'actual datataking, any DAQInterface launched in this environment',
++                'may have problems with sending output to a MessageViewer instance'
++            ]
++            stderrlines = [
++                line for line in stderrlines
++                if not any(warning in line for warning in unwanted_warnings)
++            ]
++
+             for line in stderrlines:
+                 if not line or not line.strip():
+                     stderrlines.remove(line)
+diff --git a/rc/control/utilities.py b/rc/control/utilities.py
+index 7b74822..25e1a45 100755
+--- a/rc/control/utilities.py
++++ b/rc/control/utilities.py
+@@ -1221,7 +1221,8 @@ def get_setup_commands(spackdir=None, log_file=None):
+             output.append(
+                 ". %s/share/spack/setup-env.sh >> %s 2>&1" % (spackdir, log_file)
+             )
+-        output.append("spack unload > /dev/null 2>&1")
++        if os.environ.get("DAQINTERFACE_SPACK_UNLOAD", "false").lower() == "true":
++            output.append("spack unload > /dev/null 2>&1")
+     return output
+ 
+ 
+diff --git a/rc/control/utilities_spackdev.py b/rc/control/utilities_spackdev.py
+new file mode 100644
+index 0000000..06dca1f
+--- /dev/null
++++ b/rc/control/utilities_spackdev.py
+@@ -0,0 +1,287 @@
++import re
++import argparse
++import sys
++import os
++import subprocess
++import json
++from pathlib import Path
++from typing import Dict, Union
++
++""""
++The utilities_spackdev.py contains helper functions that parse the `spack spack` output
++generated during development area setup. This output is saved as a `.pkgs.txt` file
++(e.g., sbndaq-suite-v3_13_02-scientific7-gcc13.1.0-c++20-s131.pkgs.txt). The script then
++parses CMakeLists.txt files to identify actual versions used by CMake, which replace
++the versions previously extracted from .pkgs.txt. This functionality is activated when
++the USE_SBN_DEVAREA_VERSIONING variable is set to true.
++"""
++
++
++def parse_spack_spec_package_versions(file_path: Union[str, Path]) -> Dict[str, str]:
++    try:
++        file_path = Path(file_path)
++        if not file_path.exists():
++            raise Exception(f"File not found: {file_path}")
++
++        packages = {}
++        pattern = r"\^?([a-zA-Z0-9_-]+)@([^\s%]+)"
++
++        with file_path.open("r", encoding="utf-8") as file:
++            for line_num, line in enumerate(file, 1):
++                try:
++                    line = line.strip()
++                    if not line:
++                        continue
++
++                    match = re.search(pattern, line)
++                    if match:
++                        package_name = match.group(1)
++                        version = match.group(2)
++                        if package_name and version:
++                            packages[package_name] = version
++                except Exception as e:
++                    raise Exception(f"Error parsing line {line_num}: {line}") from e
++
++        if not packages:
++            raise Exception("No valid package entries found in file")
++        return packages
++
++    except (IOError, OSError) as e:
++        raise Exception(f"Failed to read file {file_path}: {e}") from e
++    except Exception as e:
++        raise Exception(f"Unexpected error processing file {file_path}: {e}") from e
++
++
++def parse_spack_lock_package_versions(file_path: Union[str, Path]) -> Dict[str, str]:
++    try:
++        file_path = Path(file_path)
++        if not file_path.exists():
++            raise Exception(f"File not found: {file_path}")
++
++        keep_packages = os.environ.get(
++            "SPACK_KEEP_PACKAGE_VERSIONS", "artdaq,root,sbndaq,art,wibtools"
++        )
++        keep_list = [pkg.strip() for pkg in keep_packages.split(",")]
++
++        select_conditions = " or ".join([f'contains("{pkg}")' for pkg in keep_list])
++
++        jq_filter = f"{{}} as $result | .concrete_specs[] | select(.name | {select_conditions}) | .name as $name | .version as $version | $result + {{($name): $version}}"
++
++        jq_command = ["jq", "-c", jq_filter, str(file_path)]
++
++        try:
++            result = subprocess.run(
++                jq_command, capture_output=True, text=True, check=True
++            )
++            # print(f"jq command output: {result.stdout}")
++            output_lines = result.stdout.strip().split("\n")
++
++            packages = {}
++            for line in output_lines:
++                if line.strip():
++                    try:
++                        json_obj = json.loads(line)
++                        packages.update(json_obj)
++                    except json.JSONDecodeError:
++                        continue
++
++            if not packages:
++                raise Exception("No valid package entries found in spack.lock file")
++
++            return packages
++
++        except subprocess.CalledProcessError as e:
++            raise Exception(f"Failed to run jq command: {e}. Error output: {e.stderr}")
++        except FileNotFoundError:
++            raise Exception(
++                "jq command not found. Please install jq to parse spack.lock files."
++            )
++
++    except (IOError, OSError) as e:
++        raise Exception(f"Failed to read file {file_path}: {e}") from e
++    except Exception as e:
++        raise Exception(f"Unexpected error processing file {file_path}: {e}") from e
++
++
++def parse_cmake_package_versions(srcs_dir: str = "srcs") -> Dict[str, str]:
++    try:
++        srcs_path = Path(srcs_dir)
++        if not srcs_path.exists() or not srcs_path.is_dir():
++            raise Exception(f"Directory '{srcs_dir}' does not exist")
++
++        project_versions = {}
++        for project_dir in srcs_path.iterdir():
++            if not project_dir.is_dir():
++                continue
++
++            cmake_file = project_dir / "CMakeLists.txt"
++            if not cmake_file.exists() or not cmake_file.is_file():
++                continue
++
++            try:
++                with open(cmake_file, "r", encoding="utf-8") as f:
++                    content = f.read()
++
++                version_match = re.search(
++                    r"project\s*\(\s*\w+\s+VERSION\s+([^\s\)]+)",
++                    content,
++                    re.IGNORECASE | re.MULTILINE,
++                )
++
++                if version_match:
++                    version = version_match.group(1).strip()
++                    if not version.startswith("v"):
++                        version = f"v{version.replace('.', '_')}"
++                    project_versions[project_dir.name] = version
++            except (IOError, OSError, UnicodeDecodeError):
++                continue
++
++    except (OSError, PermissionError):
++        raise Exception(f"Failed to read directory '{srcs_dir}'")
++    return project_versions
++
++
++def _get_os_name_from_kernel() -> str:
++    try:
++        kernel_version = subprocess.check_output(["uname", "-r"], text=True).strip()
++        version_parts = kernel_version.split(".")
++
++        if len(version_parts) >= 2:
++            major_minor = f"{version_parts[0]}.{version_parts[1]}"
++            os_map = {"3.10": "scientific7", "5.14": "almalinux9"}
++
++            if major_minor in os_map:
++                return os_map[major_minor]
++            else:
++                print(
++                    f"Warning: Unsupported kernel version {major_minor}, trying to find any available .pkgs.txt file"
++                )
++                raise Exception(
++                    f"Unsupported kernel version: {major_minor} and unable to detect OS from filenames"
++                )
++        else:
++            raise Exception(f"Unable to parse kernel version: {kernel_version}")
++    except subprocess.CalledProcessError as e:
++        raise Exception(f"Failed to get kernel version: {e}")
++
++
++def _find_pkgs_file(env_path: Path, osname: str) -> Path:
++    pattern = f"*-{osname}-*.pkgs.txt"
++    matching_files = list(env_path.glob(pattern))
++
++    if not matching_files:
++        raise Exception(
++            f"No .pkgs.txt files found matching pattern '{pattern}' in {env_path}"
++        )
++    elif len(matching_files) > 1:
++        raise Exception(
++            f"Multiple .pkgs.txt files found matching pattern '{pattern}': {[f.name for f in matching_files]}"
++        )
++    return matching_files[0]
++
++
++def _find_lock_file(env_path: Path, osname: str) -> Path:
++    pattern = f"{osname}-*/spack.lock"
++    matching_files = list(env_path.glob(pattern))
++
++    if not matching_files:
++        raise Exception(
++            f"No spack.lock file found matching pattern '{pattern}' in {env_path}"
++        )
++    elif len(matching_files) > 1:
++        raise Exception(
++            f"Multiple spack.lock files found matching pattern '{pattern}': {[f.name for f in matching_files]}"
++        )
++    return matching_files[0]
++
++
++def repair_package_names(packages: Dict[str, str]) -> Dict[str, str]:
++    delimiter = os.environ.get("PACKAGE_NAME_DELIMITER", "_")
++    if delimiter not in ["_", "-"]:
++        return packages
++
++    replace_char = "_" if delimiter == "-" else "-"
++    return {
++        package_name.replace(replace_char, delimiter): version
++        for package_name, version in packages.items()
++    }
++
++
++def parse_package_versions(env_dir: Union[str, None] = None) -> Dict[str, str]:
++    if env_dir is None:
++        env_dir = os.environ.get("THIS_SPACK_DEV_TOP_DIR")
++        if not env_dir:
++            raise Exception(
++                "Environment directory not specified and THIS_SPACK_DEV_TOP_DIR not set"
++            )
++
++    env_path = Path(env_dir)
++    if not env_path.exists() or not env_path.is_dir():
++        raise Exception(f"Environment directory does not exist: {env_dir}")
++
++    osname = _get_os_name_from_kernel()
++
++    spack_package_versions = {}
++
++    try:
++        lock_file = _find_lock_file(env_path, osname)
++        spack_package_versions = parse_spack_lock_package_versions(lock_file)
++    except Exception as e:
++        try:
++            pkgs_file = _find_pkgs_file(env_path, osname)
++            spack_package_versions = parse_spack_spec_package_versions(pkgs_file)
++        except Exception:
++            pass
++
++    cmake_package_versions = parse_cmake_package_versions(str(env_path / "srcs"))
++
++    spack_package_versions.update(cmake_package_versions)
++
++    keep_packages = os.environ.get(
++        "SPACK_KEEP_PACKAGE_VERSIONS", "artdaq,sbndaq,wibtools"
++    )
++    keep_list = [pkg.strip() for pkg in keep_packages.split(",")]
++
++    filtered_result = {
++        k: v
++        for k, v in spack_package_versions.items()
++        if any(pkg in k for pkg in keep_list)
++    }
++    return repair_package_names(filtered_result)
++
++
++def fill_package_versions_sbn_devarea_versioning(self, packages: Union[list, None]):
++    if os.environ.get("USE_SBN_DEVAREA_VERSIONING", "").strip().lower() == "true":
++        if packages is not None:
++            packages_versions = parse_package_versions()
++            filtered_packages = {
++                pkg_name: packages_versions.get(pkg_name, "v0_00_00")
++                for pkg_name in packages
++            }
++            self.package_versions = filtered_packages
++        else:
++
++            self.package_versions = parse_package_versions()
++
++
++if __name__ == "__main__":
++
++    class DummyClass:
++        def __init__(self):
++            self.package_versions = {}
++
++    dummy1 = DummyClass()
++    fill_package_versions_sbn_devarea_versioning(
++        dummy1, ["artdaq", "artdaq-core", "sbndaq", "sbndaq_artdaq", "wibtools"]
++    )
++    print("Results with specific packages:")
++    for pkg, version in dummy1.package_versions.items():
++        print(f"{pkg}: {version}")
++
++    print("\n" + "=" * 50 + "\n")
++
++    dummy2 = DummyClass()
++    fill_package_versions_sbn_devarea_versioning(dummy2, None)
++    print("Results with all packages:")
++    for pkg, version in dummy2.package_versions.items():
++        print(f"{pkg}: {version}")
