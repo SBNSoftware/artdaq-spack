@@ -352,7 +352,7 @@ class ArtdaqSuite(BundlePackage):
         depends_on("artdaq-utilities@v1_09_00")
         depends_on("artdaq-mfextensions@v1_09_00")
         depends_on("trace@v3_17_11")
-        depends_on("artdaq-daqinterface@v3_14_00")
+        depends_on("artdaq-daqinterface@v3_14_00:")
         depends_on("artdaq-core-demo@v1_11_00", when="+demo")
         depends_on("artdaq-demo@v3_13_00", when="+demo")
         depends_on("artdaq-database@v1_10_00", when="+db")
