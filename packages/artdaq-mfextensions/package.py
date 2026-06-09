@@ -6,13 +6,14 @@
 import os
 import sys
 
-from spack import *
+from spack.package import *
 
 
 def sanitize_environments(env, *vars):
     for var in vars:
         env.prune_duplicate_paths(var)
         env.deprioritize_system_paths(var)
+
 
 class ArtdaqMfextensions(CMakePackage):
     """The toolkit currently provides functionality for data transfer,
@@ -23,21 +24,27 @@ class ArtdaqMfextensions(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_mfextensions/archive/refs/tags/v1_08_02.tar.gz"
-    git = "https://github.com/art-daq/artdaq_mfextensions.git"
+    url = "https://github.com/art-daq/artdaq-mfextensions/archive/refs/tags/v1_08_02.tar.gz"
+    git = "https://github.com/art-daq/artdaq-mfextensions.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v2_04_00", commit="6de2328e8e6f3cb6ff7237ad7b356b77186bc16c")
+    version("v2_03_00", commit="8bb3568acc107ac7c27b6f684f5a3ba52ea94062")
+    version("v2_02_00", commit="f86eaf0dc4254e5604419636252faca471706144")
+    version("v2_01_00", commit="b23c652b9626070b6bc52dba20e757d38637a03e")
+    version("v2_00_00", commit="045291d136374fe9a064001a76e6781df2491ac7")
+    version("v1_10_00", commit="6be6276c9c7798ab032935ca8053f910dd65b116")
     version("v1_09_02", commit="15e8f5c4c57e21039adfe956bf456627699f1c66")
     version("v1_09_01", commit="67df43b925235736cef91497e3148325e96b4ee6")
     version("v1_09_00", commit="f27e0c459f0b7678abe1003d9fdf3653a6b9385b")
-    version("v1_08_06", sha256="3689545eb4126a5a3501703d3f91e9f4725366e8fd7bbfa4e0999e9183dc8884")
-    version("v1_08_05", sha256="a92d230f6555fcfc565e6907d4ef02d0f7f1491db90605e0f49485dec7c63e6e")
-    version("v1_08_04", sha256="2f6cdcd0dd083d91761df06d203487613723d770051e17b967f499e4348de7c9")
-    version("v1_08_03", sha256="c83c8c3c0bb525ae504b5efee910d5a2e7c0278ddc46b04461c76425e652de62")
-    version("v1_08_02", sha256="d03b4261491bc879a34908c70f7f49cd64624ec889bfb8f486f7ce9fd1bd7f6b")
+    version("v1_08_06", commit="ab071ccb57173931f30130aa33b52a48e9d28d7c")
+    version("v1_08_05", commit="153289123420aea7dee0bea0e560055db651aa07")
+    version("v1_08_04", commit="458481dadefd5b8ebf9ec1e318f0853e9160bdf3")
+    version("v1_08_03", commit="8e83c0cb8c5d8c8d8fa5fd2b268c5afbb23d4ea4")
+    version("v1_08_02", commit="e8bee6a61cdbfadea9c96c95865dc138c2bdf815")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_mfextensions/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-mfextensions/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
@@ -47,27 +54,44 @@ class ArtdaqMfextensions(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_08_04"        
+        when="@:v1_08_03",
     )
     variant(
         "cxxstd",
         default="20",
-        values=( "17","20"),
+        values=("17", "20"),
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v1_08_04:"        
+        when="@v1_08_04:",
     )
 
-    depends_on("cetmodules", type="build")
-    depends_on("qt@5.15:")
+    variant(
+        "kafka",
+        default=True,
+        description="Build the Kafka destination, which depends on librdkafka",
+    )
+    variant(
+        "curl",
+        default=True,
+        description="Build the SMTP destination, which depends on libcurl",
+    )
+
+    depends_on("cetmodules@3.26.00:", type="build")
+    depends_on("qt@5.15:+gui")
+    depends_on("librdkafka", when="+kafka")
+    depends_on("curl", when="+curl")
 
     depends_on("trace+mf")
+    depends_on("art-suite")
 
-    with when('@:v1_08_07'):
+    with when("@:v1_08_07"):
+
         def cmake_args(self):
-            args = [ 
-            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"), self.define('IGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES', True) ]
+            args = [
+                self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+                self.define("IGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES", True),
+            ]
             return args
 
     def cmake_args(self):
@@ -97,4 +121,3 @@ class ArtdaqMfextensions(CMakePackage):
         env.prepend_path("FHICL_FILE_PATH", prefix + "/fcl")
         # Cleaup.
         sanitize_environments(env, "CET_PLUGIN_PATH", "FHICL_FILE_PATH")
-    

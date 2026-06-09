@@ -7,7 +7,7 @@ import os
 import sys
 from distutils.util import check_environ
 
-from spack import *
+from spack.package import *
 
 
 def sanitize_environments(env, *vars):
@@ -28,19 +28,29 @@ class Artdaq(CMakePackage):
     url = "https://github.com/art-daq/artdaq/archive/refs/tags/v3_12_04.tar.gz"
     git = "https://github.com/art-daq/artdaq.git"
 
-
     version("develop", branch="develop", get_full_repo=True)
-    version("v3_14_01", commit="1d6e7037dd85c31525f863e035f0b423367d637b")   
-    version("v3_14_00", commit="2006c00ed3c2480ecbea6e18fb8f5711df7529c2")    
-    version("v3_13_02", commit="6f92c47b87f80a41028b52b428af09e2ba475f87")    
-    version("v3_13_01", commit="4eb46d5bd3b4f00973f99114efe66428c6f44626")    
+    version("v4_08_00", commit="c7ff524d3d2f2f92fe0a1c3d8d7e121f96346762")
+    version("v4_07_00", commit="0abc35d95466960fa4792b6bd591dc7e7acb128d")
+    version("v4_06_00", commit="3bb38cb25f8d37cb235ee683c169a502ac1cd78a")
+    version("v4_05_00", commit="3dc9f1d8a414cf8a0f0268d7a47d74963671e40c")
+    version("v4_04_01", commit="b17c846d9ca5d6f5711e44f35da4853e2e8baa01")
+    version("v4_04_00", commit="76516eed02e96efc819c676a3dd1e5fa38467be3")
+    version("v4_03_00", commit="bb2530447184e036f652dd3c2806deec46b777b6")
+    version("v4_02_00", commit="113c6d8cf0756933ed6084dcfa39eb02cdaa6072")
+    version("v4_01_00", commit="0ef207134e76906c77269ac24f573bd904e604c3")
+    version("v4_00_00", commit="cc48fb09d08cef36958832829a54578badb4a2b1")
+    version("v3_16_00", commit="920cdfabcde642b66698d79ed74998cdf36c0bb1")
+    version("v3_15_00", commit="3f67f5216e183e0701e14db4b2e7a45877579a9d")
+    version("v3_14_01", commit="1d6e7037dd85c31525f863e035f0b423367d637b")
+    version("v3_14_00", commit="2006c00ed3c2480ecbea6e18fb8f5711df7529c2")
+    version("v3_13_01", commit="4eb46d5bd3b4f00973f99114efe66428c6f44626")
     version("v3_13_00", commit="0317da6544fbda80a760f2cac264bc6d1a328fc7")
-    version("v3_12_07", sha256="61a2bc94ada2eff1e5001d9234902471164763a01d0e47f9ebd1a3a23d7dcd43")
-    version("v3_12_05", sha256="871a2386d324059de13b94819ec11e731598a1ac124bb2e8c2b29ed7f9af9309")
-    version("v3_12_04", sha256="0221d41878d3e99b7b40ff46e3d4a9542f07bb81bb21d4cfbb223e06f2a57502")
-    version("v3_12_03", sha256="2300fd0c78d33b411cfd05b552242e1a816e457e6d13880c35e7167df77b114f")
-    version("v3_12_02", sha256="98baad840c49be9b16d8dc819a708505fa8601fcb42844c17c1013f9d75b728e")
-    version("v3_12_01", sha256="558945c67974b3bb6a1b8d8a28089f2f33d13183f21d49c0e916204896453c53")
+    version("v3_12_07", commit="8dd14f2717a3bf0599cf97b71df2f15f048134c8")
+    version("v3_12_05", commit="cf2f521077a6c2f1f34305352041d16647407798")
+    version("v3_12_04", commit="00490715245ee5a51d4ac1ea5a48cd0b8545dc32")
+    version("v3_12_03", commit="263fc0a133e64023bf830aa951f961359eb814a4")
+    version("v3_12_02", commit="81c48f5aa55b9f5f821ebc19d84bbd8c0f834aaf")
+    version("v3_12_01", commit="6239d41e5cea107b918897524fd7714cf00cd424")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/artdaq/archive/refs/tags/{0}.tar.gz"
@@ -53,7 +63,7 @@ class Artdaq(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v3_12_04"
+        when="@:v3_12_03",
     )
     variant(
         "cxxstd",
@@ -62,19 +72,24 @@ class Artdaq(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v3_12_04:"
+        when="@v3_12_04:",
     )
 
-    depends_on("art-root-io")
-    
-    depends_on("cetmodules", type="build")
+    depends_on("art-root-io cxxstd=17", when="cxxstd=17")
+    depends_on("art-root-io cxxstd=20", when="cxxstd=20")
+
+    depends_on("cetmodules@3.26.00:", type="build")
     depends_on("xmlrpc-c+curl")
     depends_on("swig", type="build")
     depends_on("node-js", type="build", when="@:v3_12_06")
 
-    depends_on("artdaq-core")
-    depends_on("artdaq-utilities")
-    depends_on("artdaq-mfextensions")
+    depends_on("artdaq-core@:v3_99_00", when="@:v3_99_00")
+    depends_on("artdaq-core@v4_00_00:,develop", when="@v4_00_00:,develop")
+    depends_on("artdaq-utilities@:v1_99_00", when="@:v3_99_00")
+    depends_on("artdaq-utilities@v2_00_00:,develop", when="@v4_00_00:,develop")
+    depends_on("artdaq-mfextensions@:v1_99_00", when="@:v3_99_00")
+    depends_on("artdaq-mfextensions@v2_00_00:,develop", when="@v4_00_00:,develop")
+    depends_on("art-suite")
 
     def cmake_args(self):
         args = [

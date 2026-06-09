@@ -11,11 +11,24 @@ from spack.package import *
 class ArtdaqSuite(BundlePackage):
     """The artdaq suite; artdaq is a data acquisition framework that leverages the analysis capabilities of art"""
 
-    homepage="https://github.com/art-daq"
+    homepage = "https://github.com/art-daq"
 
+    version("develop")
+    version("v4_08_00")
+    version("v4_07_00")
+    version("v4_06_00")
+    version("v4_05_00")
+    version("v4_04_01")
+    version("v4_04_00")
+    version("v4_03_01")
+    version("v4_03_00")
+    version("v4_02_00")
+    version("v4_01_00")
+    version("v4_00_00")
+    version("v3_16_00")
+    version("v3_15_00")
     version("v3_14_01")
     version("v3_14_00")
-    version("v3_13_02")
     version("v3_13_01")
     version("v3_13_00")
     version("v3_12_07")
@@ -24,24 +37,299 @@ class ArtdaqSuite(BundlePackage):
     version("v3_12_03")
     version("v3_12_02")
 
-    squals = ("112", "117", "118", "120", "120a", "120b", "122", "123", "124", "126", "128", "130", "131", "132")
+    squals = (
+        "112",
+        "117",
+        "118",
+        "120",
+        "120a",
+        "120b",
+        "122",
+        "123",
+        "124",
+        "126",
+        "128",
+        "130",
+        "131",
+        "132",
+        "133",
+        "134",
+    )
     variant(
         "s",
-        default="0",
+        default="134",
         values=("0",) + squals,
         multi=False,
         description="Art suite version to use",
     )
     for squal in squals:
         depends_on(f"art-suite@s{squal}+root", when=f"s={squal}")
-    depends_on("art-suite+root", when="s=0")
+    depends_on("art-suite +root")
 
     variant("demo", default=False, description="Also install artdaq_demo components")
     variant("db", default=True, description="Install artdaq_database")
     variant("epics", default=True, description="Install artdaq EPICS plugin")
-    variant("pcp", default=True, description="Install artdaq PCP MMV plugin")
+    variant("pcp", default=False, description="Install artdaq PCP MMV plugin")
+    variant("caen", default=False, description="Install artdaq CAEN plugin")
 
+    variant("ci", default=True, description="Install utilities used by CI builds")
+    with when("+ci"):
+        depends_on("lcov")
+        depends_on("py-black")
+        depends_on("py-cmake-format")
 
+    with when("@develop"):
+        depends_on("trace")
+        depends_on("artdaq-core")
+        depends_on("artdaq-utilities")
+        depends_on("artdaq-mfextensions")
+        depends_on("artdaq")
+        depends_on("artdaq-epics-plugin", when="+epics")
+        depends_on("artdaq-daqinterface")
+        depends_on("artdaq-core-demo", when="+demo")
+        depends_on("artdaq-database", when="+db")
+        depends_on("artdaq-demo", when="+demo")
+        depends_on("artdaq-caen", when="+caen")
+
+        # External Dependencies not in art-suite
+        depends_on("swig")
+        depends_on("xmlrpc-c +curl")
+        depends_on("curl")
+        depends_on("qt")
+        depends_on("librdkafka")
+        depends_on("epics-base", when="+epics")
+    with when("@v4_08_00"):
+        depends_on("trace@v3_24_00")
+        depends_on("artdaq-core@v5_02_00")
+        depends_on("artdaq-utilities@v2_04_00")
+        depends_on("artdaq-mfextensions@v2_04_00")
+        depends_on("artdaq@v4_08_00")
+        depends_on("artdaq-epics-plugin@v2_03_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_06_00")
+        depends_on("artdaq-core-demo@v2_05_00", when="+demo")
+        depends_on("artdaq-database@v3_03_00", when="+db")
+        depends_on("artdaq-demo@v4_08_00", when="+demo")
+        depends_on("artdaq-caen@v1_03_00", when="+caen")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl")
+        depends_on("qt@5.15:")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+        depends_on("mongo-cxx-driver@3.10.1 +dots_in_keys", when="+db")
+    with when("@v4_07_00"):
+        depends_on("trace@v3_23_00")
+        depends_on("artdaq-core@v5_01_00")
+        depends_on("artdaq-utilities@v2_03_00")
+        depends_on("artdaq-mfextensions@v2_03_00")
+        depends_on("artdaq@v4_07_00")
+        depends_on("artdaq-epics-plugin@v2_02_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_05_00")
+        depends_on("artdaq-core-demo@v2_04_00", when="+demo")
+        depends_on("artdaq-database@v3_02_00", when="+db")
+        depends_on("artdaq-demo@v4_07_00", when="+demo")
+        depends_on("artdaq-caen@v1_02_00", when="+caen")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl")
+        depends_on("qt@5.15:")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+        depends_on("mongo-cxx-driver@3.10.1 +dots_in_keys", when="+db")
+    with when("@v4_06_00"):
+        depends_on("trace@v3_22_00")
+        depends_on("artdaq-core@v5_00_00")
+        depends_on("artdaq-utilities@v2_02_00")
+        depends_on("artdaq-mfextensions@v2_03_00")
+        depends_on("artdaq@v4_06_00")
+        depends_on("artdaq-epics-plugin@v2_01_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_05_00")
+        depends_on("artdaq-core-demo@v2_03_00", when="+demo")
+        depends_on("artdaq-database@v3_02_00", when="+db")
+        depends_on("artdaq-demo@v4_06_00", when="+demo")
+        depends_on("artdaq-caen@v1_02_00", when="+caen")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl")
+        depends_on("qt@5.15:")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+        depends_on("mongo-cxx-driver@3.10.1 +dots_in_keys", when="+db")
+    with when("@v4_05_00"):
+        depends_on("trace@v3_21_00")
+        depends_on("artdaq-core@v5_00_00")
+        depends_on("artdaq-utilities@v2_02_00")
+        depends_on("artdaq-mfextensions@v2_02_00")
+        depends_on("artdaq@v4_05_00")
+        depends_on("artdaq-epics-plugin@v2_01_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_04_00")
+        depends_on("artdaq-core-demo@v2_03_00", when="+demo")
+        depends_on("artdaq-database@v3_01_00", when="+db")
+        depends_on("artdaq-demo@v4_05_00", when="+demo")
+        depends_on("artdaq-caen@v1_01_00", when="+caen")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl")
+        depends_on("qt@5.15:")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+        depends_on("mongo-cxx-driver@3.10.1 +dots_in_keys", when="+db")
+    with when("@v4_04_01"):
+        depends_on("trace@v3_20_00")
+        depends_on("artdaq-core@v4_03_00")
+        depends_on("artdaq-utilities@v2_01_01")
+        depends_on("artdaq-mfextensions@v2_01_00")
+        depends_on("artdaq@v4_04_01")
+        depends_on("artdaq-epics-plugin@v2_00_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_03_01")
+        depends_on("artdaq-core-demo@v2_02_00", when="+demo")
+        depends_on("artdaq-database@v3_00_00", when="+db")
+        depends_on("artdaq-demo@v4_04_00", when="+demo")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl@7.76.1")
+        depends_on("qt@5.15.15 +gui+shared")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+        depends_on("mongo-cxx-driver@3.10.1 +dots_in_keys", when="+db")
+    with when("@v4_04_00"):
+        depends_on("trace@v3_20_00")
+        depends_on("artdaq-core@v4_03_00")
+        depends_on("artdaq-utilities@v2_01_01")
+        depends_on("artdaq-mfextensions@v2_01_00")
+        depends_on("artdaq@v4_04_00")
+        depends_on("artdaq-epics-plugin@v2_00_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_03_00")
+        depends_on("artdaq-core-demo@v2_02_00", when="+demo")
+        depends_on("artdaq-database@v3_00_00", when="+db")
+        depends_on("artdaq-demo@v4_04_00", when="+demo")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl@7.76.1")
+        depends_on("qt@5.15.15 +gui+shared")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+        depends_on("mongo-cxx-driver@3.10.1 +dots_in_keys", when="+db")
+    with when("@v4_03_01"):
+        depends_on("trace@v3_19_00")
+        depends_on("artdaq-core@v4_03_00")
+        depends_on("artdaq-utilities@v2_01_01")
+        depends_on("artdaq-mfextensions@v2_01_00")
+        depends_on("artdaq@v4_03_00")
+        depends_on("artdaq-epics-plugin@v2_00_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_02_00")
+        depends_on("artdaq-core-demo@v2_02_00", when="+demo")
+        depends_on("artdaq-database@v2_00_00", when="+db")
+        depends_on("artdaq-demo@v4_03_00", when="+demo")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl@7.76.1")
+        depends_on("qt@5.15.15 +gui+shared")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+    with when("@v4_03_00"):
+        depends_on("trace@v3_19_00")
+        depends_on("artdaq-core@v4_03_00")
+        depends_on("artdaq-utilities@v2_01_00")
+        depends_on("artdaq-mfextensions@v2_01_00")
+        depends_on("artdaq@v4_03_00")
+        depends_on("artdaq-epics-plugin@v2_00_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_02_00")
+        depends_on("artdaq-core-demo@v2_02_00", when="+demo")
+        depends_on("artdaq-database@v2_00_00", when="+db")
+        depends_on("artdaq-demo@v4_03_00", when="+demo")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl@7.76.1")
+        depends_on("qt@5.15.15 +gui+shared")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+    with when("@v4_02_00"):
+        depends_on("trace@v3_19_00")
+        depends_on("artdaq-core@v4_02_00")
+        depends_on("artdaq-utilities@v2_00_00")
+        depends_on("artdaq-mfextensions@v2_00_00")
+        depends_on("artdaq@v4_02_00")
+        depends_on("artdaq-epics-plugin@v2_00_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_01_00")
+        depends_on("artdaq-core-demo@v2_01_00", when="+demo")
+        depends_on("artdaq-database@v2_00_00", when="+db")
+        depends_on("artdaq-demo@v4_02_00", when="+demo")
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl@7.76.1")
+        depends_on("qt@5.15.15 +gui+shared")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+    with when("@v4_01_00"):
+        depends_on("trace@v3_18_00")
+        depends_on("artdaq-core@v4_01_00")
+        depends_on("artdaq-utilities@v2_00_00")
+        depends_on("artdaq-mfextensions@v2_00_00")
+        depends_on("artdaq@v4_01_00")
+        depends_on("artdaq-epics-plugin@v2_00_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_00_00")
+        depends_on("artdaq-core-demo@v2_00_00", when="+demo")
+        depends_on("artdaq-database@v2_00_00", when="+db")
+        depends_on("artdaq-demo@v4_01_00", when="+demo")
+
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl@7.76.1")
+        depends_on("qt@5.15.15 +gui+shared")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+    with when("@v4_00_00"):
+        depends_on("trace@v3_18_00")
+        depends_on("artdaq-core@v4_00_00")
+        depends_on("artdaq-utilities@v2_00_00")
+        depends_on("artdaq-mfextensions@v2_00_00")
+        depends_on("artdaq@v4_00_00")
+        depends_on("artdaq-epics-plugin@v2_00_00", when="+epics")
+        depends_on("artdaq-daqinterface@v4_00_00")
+        depends_on("artdaq-core-demo@v2_00_00", when="+demo")
+        depends_on("artdaq-database@v2_00_00", when="+db")
+        depends_on("artdaq-demo@v4_00_00", when="+demo")
+
+        # External Dependencies not in art-suite
+        depends_on("swig@4.1.1")
+        depends_on("xmlrpc-c@1.51.06 +curl")
+        depends_on("curl@7.76.1")
+        depends_on("qt@5.15.15 +gui+shared")
+        depends_on("librdkafka@2.8.0")
+        depends_on("epics-base@7.0.6.1", when="+epics")
+    with when("@v3_16_00"):
+        depends_on("trace@v3_17_17")
+        depends_on("artdaq-core@v3_13_00")
+        depends_on("artdaq-utilities@v1_11_00")
+        depends_on("artdaq-mfextensions@v1_10_00")
+        depends_on("artdaq@v3_16_00")
+        depends_on("artdaq-epics-plugin@v1_07_00", when="+epics")
+        depends_on("artdaq-daqinterface@v3_16_00")
+        depends_on("artdaq-core-demo@v1_12_00", when="+demo")
+        depends_on("artdaq-database@v1_10_02", when="+db")
+        depends_on("artdaq-demo@v3_16_00", when="+demo")
+    with when("@v3_15_00"):
+        depends_on("trace@v3_17_15")
+        depends_on("artdaq-core@v3_12_00")
+        depends_on("artdaq-utilities@v1_10_00")
+        depends_on("artdaq-mfextensions@v1_09_02")
+        depends_on("artdaq@v3_15_00")
+        depends_on("artdaq-epics-plugin@v1_06_03", when="+epics")
+        depends_on("artdaq-daqinterface@v3_15_00")
+        depends_on("artdaq-core-demo@v1_11_01", when="+demo")
+        depends_on("artdaq-database@v1_10_02", when="+db")
+        depends_on("artdaq-demo@v3_15_00", when="+demo")
     with when("@v3_14_01"):
         depends_on("trace@v3_17_14")
         depends_on("artdaq-core@v3_11_01")
@@ -65,23 +353,11 @@ class ArtdaqSuite(BundlePackage):
         depends_on("artdaq-core-demo@v1_11_00", when="+demo")
         depends_on("artdaq-database@v1_10_00", when="+db")
         depends_on("artdaq-demo@v3_14_00", when="+demo")
-    with when("@v3_13_02"):
-        depends_on("artdaq@v3_13_02")
-        depends_on("artdaq-core@v3_10_02")
-        depends_on("artdaq-utilities@v1_09_00")
-        depends_on("artdaq-mfextensions@v1_09_00")
-        depends_on("trace@v3_17_11")
-        depends_on("artdaq-daqinterface@v3_14_00")
-        depends_on("artdaq-core-demo@v1_11_00", when="+demo")
-        depends_on("artdaq-demo@v3_13_00", when="+demo")
-        depends_on("artdaq-database@v1_10_00", when="+db")
-        depends_on("artdaq-epics-plugin@v1_06_00", when="+epics")
-        depends_on("artdaq-pcp-mmv-plugin@v1_04_00", when="+pcp")
     with when("@v3_13_01"):
         depends_on("artdaq@v3_13_01")
         depends_on("artdaq-core@v3_10_03")
         depends_on("artdaq-core-demo@v1_11_00", when="+demo")
-        depends_on("artdaq-daqinterface@v3_14_00")
+        depends_on("artdaq-daqinterface@v3_13_01")
         depends_on("artdaq-database@v1_10_00", when="+db")
         depends_on("artdaq-demo@v3_13_01", when="+demo")
         depends_on("artdaq-epics-plugin@v1_06_01", when="+epics")

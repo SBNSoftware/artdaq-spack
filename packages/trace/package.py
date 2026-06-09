@@ -9,7 +9,7 @@ import sys
 from spack.util.environment import EnvironmentModifications
 from llnl.util.filesystem import join_path
 
-from spack import *
+from spack.package import *
 
 
 def sanitize_environments(env, *vars):
@@ -28,37 +28,29 @@ class Trace(CMakePackage):
 
     parallel = False
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v3_24_00", commit="6add133be9b6b1dbdbca92c4d1f8eda7066e6ca8")
+    version("v3_23_00", commit="61b5209043144a1f514ff0e85fafd2c0a3db4cb3")
+    version("v3_22_00", commit="38164de32aa979f27a1d88b5ce64caed84d06b59")
+    version("v3_21_00", commit="dad73a94ca42eaaa1e2990fefba00fbc3c41e1d9")
+    version("v3_20_00", commit="c129aef63ffd3242e059e769021ca891088988e7")
+    version("v3_19_00", commit="ca14c7ba08837b5293337763150235c4434252ed")
+    version("v3_18_00", commit="30c44bc884375ad0aae6a45ab8940a8d9ce2091b")
+    version("v3_17_17", commit="a7a6555ad7c0db31368e15a41e6ceb9f4e5312b6")
+    version("v3_17_16", commit="c9a08f545867143d37b1c4d906b2164b95f940b5")
+    version("v3_17_15", commit="716bee566b49c9edbceb1b0ae40562c2d0ec3648")
     version("v3_17_14", commit="4f0a54a354b7f19a7cc3874d2d7b48a24990a102")
     version("v3_17_13", commit="01865d3fc90e82f20b50da10b6a7993ab428bcf5")
     version("v3_17_12", commit="58433e1c560c4c6538c6f6fc79b04a106691749f")
     version("v3_17_11", commit="23f21ee9c53af5bd0e1b695038cda457517028fe")
-    version(
-        "v3_17_10",
-        sha256="65636eec2cef36a21e7947aac09cc1e1347ae0a5f81655cb2ef1acf3d92c2810",
-    )
-    version(
-        "v3_17_09",
-        sha256="392a8326836d09ed6d7f85fbb11be104291ecd346cd8ea03c1149841e3f3bfc2",
-    )
-    version(
-        "v3_17_08",
-        sha256="911a62c262679e2ea2409039f6d4bef99bcb44d6e9b05b3088547d37c43d4be1",
-    )
-    version(
-        "v3_17_07",
-        sha256="75d703464d8031320aff972d91d8cc197fcbd553477923569c51f60daa6b27eb",
-    )
-    version(
-        "v3_17_06",
-        sha256="1fffcb4450b543469d811a05bc00a3beca46e5a1b90954d1d47796e1e9334032",
-    )
-    version(
-        "v3_17_05",
-        sha256="6d22f37eca399e8c34ad0b79f29a8d95772279cbd2d47a3d1fd38496913bdcef",
-    )
+    version("v3_17_10", commit="8f81c8f0fdbbb87e67d6cf9dd38ec13c5689d2a9")
+    version("v3_17_09", commit="d93a64f45e57bec87c0b890b9bbaaf94eb0b2e69")
+    version("v3_17_08", commit="791e287d62dd0d4dbf616cb30692f676e2dba8da")
+    version("v3_17_07", commit="acd94af76d796e1edf963faa282e1389ebae9bbc")
+    version("v3_17_06", commit="41736440d4be0f2adaa376bf8d230d4eccc540ce")
+    version("v3_17_05", commit="2dfadcd237b1253426166a0a9f7c8ce250c3f27e")
 
     def url_for_version(self, version):
         url = "https://github.com/art-daq/trace/archive/refs/tags/{0}.tar.gz"
@@ -69,7 +61,7 @@ class Trace(CMakePackage):
         if generator.endswith("Ninja"):
             depends_on("ninja@1.10:", type="build")
 
-    variant("kmod", default=True, description="Create Linux kernel module")
+    variant("kmod", default=False, description="Create Linux kernel module")
     variant("mf", default=False, description="Compile MessageFacility library")
 
     patch("stronger_want_kmod.patch", when="@:v3_17_13")

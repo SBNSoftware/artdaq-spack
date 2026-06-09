@@ -6,7 +6,7 @@
 import os
 import sys
 
-from spack import *
+from spack.package import *
 
 
 def sanitize_environments(env, *vars):
@@ -24,22 +24,35 @@ class OtsdaqDemo(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/otsdaq_demo/archive/refs/tags/v2_06_08.tar.gz"
-    git = "https://github.com/art-daq/otsdaq_demo.git"
+    url = "https://github.com/art-daq/otsdaq-demo/archive/refs/tags/v2_06_08.tar.gz"
+    git = "https://github.com/art-daq/otsdaq-demo.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v3_08_00", commit="699165f06329e261bdf38c89f2c44781cdc4735a")
+    version("v3_07_00", commit="f66d632af4ef1ab0af183d08f1464cff593e40c0")
+    version("v3_06_00", commit="ec95b9f62729df6d7ff1f8738a7722d84256e6bc")
+    version("v3_05_01", commit="4bee219bdb63b8007ccf9899d47c12a9c95e735f")
+    version("v3_05_00", commit="73d7b909d57cef0377105ef3f35a4eed97b3ce4e")
+    version("v3_04_01", commit="a1f7e2473df910165ee9c2c584d8abe877195096")
+    version("v3_04_00", commit="862ebcea9a32712640d6a11e7221aa46b4ff2141")
+    version("v3_03_00", commit="9f749ca72fe7e3430f68e204e20773437994418d")
+    version("v3_02_00", commit="223a9b2203046322b4d1dd0b5125c8beb6ca4218")
+    version("v3_01_00", commit="874580e1b40818270c4b4f9dc107c7ff0859e701")
+    version("v3_00_00", commit="5f304b7f6ae03faba7cd0e749187d395c1985f35")
+    version("v2_10_00", commit="d0c90f7a2b1114bfea0b64eb20cbdb9b40c4651e")
+    version("v2_09_01", commit="9ad2e77fe82e8a0d3f11db0d3a5e7734bf6b0bfc")
     version("v2_09_00", commit="fa35f2c0c00cc84b82c0f567c88fb2405d53ea9c")
     version("v2_08_02", commit="4c4af9009475e00cacdd4fb8c700588f42366bab")
     version("v2_08_01", commit="0ea738a6f21c8678cc6c9d8f41ca1163ccb2cd18")
     version("v2_08_00", commit="677f1844f351c0ac5a481f484c54b8d0ea877191")
-    version("v2_07_00", sha256="55d4379bce188b85c9a65989aa61064cd936dc897ba65a4caea23ad3a085cc00")
-    version("v2_06_11", sha256="5efa1736f3553f5f6d837597e650a9434ad564baaf78033e80b3d2c45e0db228")
-    version("v2_06_10", sha256="174160f6c9206ba50f29bc39797fbc390d5f705bd525e46513e552176cd28468")
-    version("v2_06_09", sha256="8685c2800c05b75695dd9f55c0816069f306de187060cf981d8db5c8831f9616")
-    version("v2_06_08", sha256="8402dbd195ad95ad5960ede16bdb56a780b248501c9486405e1a72c7993a7a70")
+    version("v2_07_00", commit="6fcd7affda19c37908e4b204b4cc819b5e229593")
+    version("v2_06_11", commit="6c5436d34d10c55842e7bd696e5e091239c1d158")
+    version("v2_06_10", commit="71655c13c66d1502c418d3aaf9c692aa226b8733")
+    version("v2_06_09", commit="ca9d6a82f25af382413f03ae46c5169aed6933c1")
+    version("v2_06_08", commit="4c2aaa53e27ca6ef0a98bfaed0e66e4a9e2e6b34")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/otsdaq_demo/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/otsdaq-demo/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
@@ -49,7 +62,7 @@ class OtsdaqDemo(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v2_06_10"        
+        when="@:v2_06_09",
     )
     variant(
         "cxxstd",
@@ -58,14 +71,18 @@ class OtsdaqDemo(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v2_06_10:"        
+        when="@v2_06_10:",
     )
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
 
-    depends_on("otsdaq")
-    depends_on("otsdaq-utilities")
-    depends_on("otsdaq-components")
+    depends_on("otsdaq@:v2_99_00", when="@:v2_99_00")
+    depends_on("otsdaq@v3_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("otsdaq-utilities@:v2_99_00", when="@:v2_99_00")
+    depends_on("otsdaq-utilities@v3_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("otsdaq-components@:v2_99_00", when="@:v2_99_00")
+    depends_on("otsdaq-components@v3_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("artdaq-suite")
 
     def cmake_args(self):
         args = [
@@ -76,7 +93,6 @@ class OtsdaqDemo(CMakePackage):
         else:
             self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
         return args
-
 
     def setup_run_environment(self, env):
         prefix = self.prefix

@@ -6,13 +6,14 @@
 import os
 import sys
 
-from spack import *
+from spack.package import *
 
 
 def sanitize_environments(env, *vars):
     for var in vars:
         env.prune_duplicate_paths(var)
         env.deprioritize_system_paths(var)
+
 
 class ArtdaqUtilities(CMakePackage):
     """The toolkit currently provides functionality for data transfer,
@@ -23,20 +24,29 @@ class ArtdaqUtilities(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_utilities/archive/refs/tags/v1_08_02.tar.gz"
-    git = "https://github.com/art-daq/artdaq_utilities.git"
+    url = (
+        "https://github.com/art-daq/artdaq-utilities/archive/refs/tags/v1_08_02.tar.gz"
+    )
+    git = "https://github.com/art-daq/artdaq-utilities.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v2_04_00", commit="06749c5984c85f02dfc249c3b854d6dbee02a807")
+    version("v2_03_00", commit="9d0565de39b6c93fbb6468ccea58dde18f6c0e08")
+    version("v2_02_00", commit="8b0c8dfc2310c742e5033c64070aeeeea3e62e08")
+    version("v2_01_01", commit="bf46ab824d84f962ef486427874ee4c4cb2615a2")
+    version("v2_01_00", commit="9c62249488feedb5f39345766d1b25acc871d55a")
+    version("v2_00_00", commit="c564141ac7d5bbb2178714acfb9b085ea1c5a2de")
+    version("v1_11_00", commit="62e841ecc45baeccfaf49ceafc3151f7f75c4b97")
     version("v1_10_00", commit="096107fb46013bb4f402b27e885f7d37384b186a")
     version("v1_09_01", commit="08a117ded7ea08f938af06f0e3091ac701f4ec2b")
     version("v1_09_00", commit="dd5eea2969fa2bbe31867355a43a9d0fa48c95cd")
-    version("v1_08_06", sha256="76aff946eae802cc2a8ac285e92403a4c65af82de99f188869e6c43228f315e4")
-    version("v1_08_04", sha256="66a3ccbf975c0171c8f2f377a17aa646d22f2aa190763939c270d5a8bf52d3f2")
-    version("v1_08_03", sha256="761ce48cfdfb447fa0536df68719ada0d5ae5a426ca76f627792cac894caf475")
-    version("v1_08_02", sha256="019a09d1f55d269066e0e5049bad6b0999883c6f6c455c178001bbd9d3b68722")
+    version("v1_08_06", commit="af854ea523eb836179e6ceef4ffb4f59b3084085")
+    version("v1_08_04", commit="9690361a4b7f03aaf34e7c7add6aa77cb8a2c1f6")
+    version("v1_08_03", commit="8cd890a2f46901100975e19a88ebddb1b3e302ff")
+    version("v1_08_02", commit="c3382790c56b109adeae0eaf30a5a9f422d6ccbf")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_utilities/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-utilities/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
@@ -46,7 +56,7 @@ class ArtdaqUtilities(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_08_04"        
+        when="@:v1_08_03",
     )
     variant(
         "cxxstd",
@@ -55,13 +65,16 @@ class ArtdaqUtilities(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v1_08_04:"        
+        when="@v1_08_04:",
     )
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
     depends_on("messagefacility")
+    depends_on("art-suite")
 
     depends_on("trace+mf")
+    depends_on("py-plotly", type="run")
+    depends_on("py-plotext", type="run")
 
     def cmake_args(self):
         args = [
@@ -90,4 +103,3 @@ class ArtdaqUtilities(CMakePackage):
         env.prepend_path("FHICL_FILE_PATH", prefix + "/fcl")
         # Cleaup.
         sanitize_environments(env, "CET_PLUGIN_PATH", "FHICL_FILE_PATH")
-

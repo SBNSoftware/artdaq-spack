@@ -6,13 +6,14 @@
 import os
 import sys
 
-from spack import *
+from spack.package import *
 
 
 def sanitize_environments(env, *vars):
     for var in vars:
         env.prune_duplicate_paths(var)
         env.deprioritize_system_paths(var)
+
 
 class ArtdaqPcpMmvPlugin(CMakePackage):
     """The toolkit currently provides functionality for data transfer,
@@ -23,18 +24,18 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_pcp_mmv_plugin/archive/refs/tags/v1_03_02.tar.gz"
-    git = "https://github.com/art-daq/artdaq_pcp_mmv_plugin.git"
+    url = "https://github.com/art-daq/artdaq-pcp-mmv-plugin/archive/refs/tags/v1_03_02.tar.gz"
+    git = "https://github.com/art-daq/artdaq-pcp-mmv-plugin.git"
 
     version("develop", branch="develop", get_full_repo=True)
     version("v1_04_00", commit="c1dc4e08a717fac9e75f3c765639463734c297b0")
-    version("v1_03_06", sha256="bada5e0628f7f371ba78b138684680c023d14c239f9179b223a2f352e9e681a8")
-    version("v1_03_04", sha256="7f7bebc059e7f174c4591017cbb754f8bc447c1edde9b347c76641aa8251ee7f")
-    version("v1_03_03", sha256="699dc00f34ed9c698621087aa203d4df163fba96ed0246f993a8e09513929302")
-    version("v1_03_02", sha256="c758895726c01b72f8937ef9a1a3f30c5e1e4c94557bf8f043bd9694790a6bfe")
+    version("v1_03_06", commit="07b33fe25c17b6e25f62d1c95ab94d11e070e133")
+    version("v1_03_04", commit="86bf4052f21e241723555cdd9f427b0e904b3b28")
+    version("v1_03_03", commit="3ef31b9978037cd3080fe5e8851ed1b3c8816dbe")
+    version("v1_03_02", commit="a09b0f3e137d300f8507f6e140301ec8a2a2748a")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_pcp_mmv_plugin/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq-pcp-mmv-plugin/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
@@ -44,7 +45,7 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v1_03_04"        
+        when="@:v1_03_03",
     )
     variant(
         "cxxstd",
@@ -53,10 +54,10 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v1_03_04:"        
+        when="@v1_03_04:",
     )
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
 
     depends_on("artdaq-utilities")
 
@@ -87,4 +88,3 @@ class ArtdaqPcpMmvPlugin(CMakePackage):
         env.prepend_path("FHICL_FILE_PATH", prefix + "/fcl")
         # Cleaup.
         sanitize_environments(env, "CET_PLUGIN_PATH", "FHICL_FILE_PATH")
-    

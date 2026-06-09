@@ -6,14 +6,13 @@
 import os
 import sys
 
-from spack import *
+from spack.package import *
 
 
 def sanitize_environments(env, *vars):
     for var in vars:
         env.prune_duplicate_paths(var)
         env.deprioritize_system_paths(var)
-
 
 
 class OtsdaqPrepmodernization(CMakePackage):
@@ -25,22 +24,29 @@ class OtsdaqPrepmodernization(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/otsdaq_prepmodernization/archive/refs/tags/v2_06_08.tar.gz"
-    git = "https://github.com/art-daq/otsdaq_prepmodernization.git"
+    url = "https://github.com/art-daq/otsdaq-prepmodernization/archive/refs/tags/v2_06_08.tar.gz"
+    git = "https://github.com/art-daq/otsdaq-prepmodernization.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v3_04_00", commit="29c570f82d0606df080ad68f31c24a89a4d23519")
+    version("v3_03_00", commit="4cc91ee3034b29bf3786a8e3c0d595e0096a40f4")
+    version("v3_02_00", commit="4f2dd08dd3eeb8aa44b4f422a29a85f9cdeaeddd")
+    version("v3_01_00", commit="e9909827e00b75cf90b5b4a3595f8c34808cb1c9")
+    version("v3_00_00", commit="e66ae40b1a7d03887681b8465a9eb57e91ec1ae4")
+    version("v2_10_00", commit="40f6197b16c5e1f040a9638c572da383771a929a")
+    version("v2_09_01", commit="73339975d4130bbe5e97ffbb83342e07e56d498f")
     version("v2_09_00", commit="b238f2e3feeab28fadf47d8cc40267363a5bd9b0")
     version("v2_08_02", commit="637dcff1fbdafcd775e12eea2384202ff84dd3d9")
     version("v2_08_01", commit="f4a12f00d6f7709bdcfddcad49c9ee38f0cc69e3")
     version("v2_08_00", commit="c28c948dc934dd6370c5919c6c68e3bdb9d8feba")
-    version("v2_07_00", sha256="fdd9669d93f63be756a43113f2360497ef5d2ce5a42636fa44d9bdc363a07cc5")
-    version("v2_06_11", sha256="b6d5d52b723dacffe292dcd9979c8bb1a77e014f7f8c69b00b5a7d7dcc3ded8f")
-    version("v2_06_10", sha256="9f04f751b9161de42fe737d94a84f8b76bbfc66572d13c537d431a5fa860d810")
-    version("v2_06_09", sha256="2292d08afa50c6946f722a0a1ece333a889e5b018fcab2c0d28d03fb843dd975")
-    version("v2_06_08", sha256="bbb04dee03dc212aa499f7d978492db26f6896e8436d0c14576be4e22d688e59")
+    version("v2_07_00", commit="0966c03205416c41913b4e23aef21b417e48099e")
+    version("v2_06_11", commit="82a680ad2adde195f9c80ed112278c24801f7c98")
+    version("v2_06_10", commit="50748b05521346bd8cf8ab5c70f3711760fbb44c")
+    version("v2_06_09", commit="9ac1821a9b432dd366ee404c4a5929783934dec1")
+    version("v2_06_08", commit="70d400ec9d03cea9ec60429954b845d667c88622")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/otsdaq_prepmodernization/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/otsdaq-prepmodernization/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
@@ -50,7 +56,7 @@ class OtsdaqPrepmodernization(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@:v2_06_10"        
+        when="@:v2_06_09",
     )
     variant(
         "cxxstd",
@@ -59,14 +65,18 @@ class OtsdaqPrepmodernization(CMakePackage):
         multi=False,
         sticky=True,
         description="Use the specified C++ standard when building.",
-        when="@v2_06_10:"        
+        when="@v2_06_10:",
     )
 
-    depends_on("cetmodules", type="build")
+    depends_on("cetmodules@3.26.00:", type="build")
 
-    depends_on("otsdaq")
-    depends_on("otsdaq-utilities")
-    depends_on("otsdaq-components")
+    depends_on("otsdaq@:v2_99_00", when="@:v2_99_00")
+    depends_on("otsdaq@v3_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("otsdaq-utilities@:v2_99_00", when="@:v2_99_00")
+    depends_on("otsdaq-utilities@v3_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("otsdaq-components@:v2_99_00", when="@:v2_99_00")
+    depends_on("otsdaq-components@v3_00_00:,develop", when="@v3_00_00:,develop")
+    depends_on("artdaq-suite")
 
     def cmake_args(self):
         args = [
@@ -77,8 +87,6 @@ class OtsdaqPrepmodernization(CMakePackage):
         else:
             self.define("artdaq_core_OLD_STYLE_CONFIG_VARS", True)
         return args
-
-
 
     def setup_run_environment(self, env):
         prefix = self.prefix
