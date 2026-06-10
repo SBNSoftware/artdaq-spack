@@ -1,12 +1,12 @@
---- a/src/mongocxx/lib/mongocxx/v_noabi/mongocxx/bulk_write.cpp
-+++ b/src/mongocxx/lib/mongocxx/v_noabi/mongocxx/bulk_write.cpp
+--- a/src/mongocxx/lib/mongocxx/v_noabi/mongocxx/bulk_write.cpp	2026-06-10 01:14:25.400000000 -0500
++++ b/src/mongocxx/lib/mongocxx/v_noabi/mongocxx/bulk_write.cpp	2026-06-10 01:14:33.746000000 -0500
 @@ -145,6 +145,14 @@
      append_upsert(options, op);
      append_array_filters(options, op);
  
 +    //GAL,ELF:BEGIN Allow "." (dots) in keys
 +    options += scoped_bson{BCON_NEW(
-+        "validate"
++        "validate",
 +        BCON_INT32(
 +            BSON_VALIDATE_UTF8 | BSON_VALIDATE_DOLLAR_KEYS | BSON_VALIDATE_UTF8_ALLOW_NULL |
 +            BSON_VALIDATE_EMPTY_KEYS))};
