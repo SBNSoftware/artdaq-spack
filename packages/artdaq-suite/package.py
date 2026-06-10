@@ -357,7 +357,7 @@ class ArtdaqSuite(BundlePackage):
         depends_on("artdaq-demo@v3_13_00", when="+demo")
         depends_on("artdaq-database@v1_10_00:", when="+db")
         depends_on("artdaq-epics-plugin@v1_06_00", when="+epics")
-        depends_on("cetmodules@3.26.00")
+        depends_on("cetmodules@3.24.01")
         #depends_on("artdaq-pcp-mmv-plugin@v1_04_00", when="+pcp")
     with when("@v3_13_01"):
         depends_on("artdaq@v3_13_01")

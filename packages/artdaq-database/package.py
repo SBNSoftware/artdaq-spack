@@ -22,6 +22,8 @@ class ArtdaqDatabase(CMakePackage):
     git = "https://github.com/art-daq/artdaq-database.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v3_05_00", commit="eae8e23e1eae3951e730e5e98fe4bbf87884e673")
+    version("v3_04_00", commit="eae8e23e1eae3951e730e5e98fe4bbf87884e673")
     version("v3_03_00", commit="eae8e23e1eae3951e730e5e98fe4bbf87884e673")
     version("v3_02_00", commit="b75023c0fc2e17985dbd3bbab408f015a3f314cb")
     version("v3_01_00", commit="b3ac069989719b098fdc0bdfabf5bee047a72995")
@@ -67,7 +69,10 @@ class ArtdaqDatabase(CMakePackage):
     depends_on("fhicl-cpp+db")
 
     depends_on("mongo-cxx-driver+dots_in_keys", type="build")
-    depends_on("cetmodules@3.26.00:", type="build")
+    depends_on("mongo-cxx-driver@:3.10", type="build", when="@:v3_03_00")
+    depends_on("mongo-cxx-driver@3.11.1", type="build", when="@v3_04_00")
+    depends_on("mongo-cxx-driver@4.3.1", type="build", when="@v3_05_00")
+    depends_on("cetmodules@3.24.01:", type="build")
 
     depends_on("cetlib", when="~builtin_fhicl")
 
@@ -80,3 +85,5 @@ class ArtdaqDatabase(CMakePackage):
         return args
 
     patch("patch/v1_10_00.path", when="@v1_10_00")
+    patch("patch/v3_04_00.patch", when="@v3_04_00")
+    patch("patch/v3_05_00.patch", when="@v3_05_00")

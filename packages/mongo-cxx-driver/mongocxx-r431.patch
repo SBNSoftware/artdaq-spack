@@ -1,0 +1,17 @@
+--- a/src/mongocxx/lib/mongocxx/v_noabi/mongocxx/bulk_write.cpp
++++ b/src/mongocxx/lib/mongocxx/v_noabi/mongocxx/bulk_write.cpp
+@@ -145,6 +145,14 @@
+     append_upsert(options, op);
+     append_array_filters(options, op);
+ 
++    //GAL,ELF:BEGIN Allow "." (dots) in keys
++    options += scoped_bson{BCON_NEW(
++        "validate"
++        BCON_INT32(
++            BSON_VALIDATE_UTF8 | BSON_VALIDATE_DOLLAR_KEYS | BSON_VALIDATE_UTF8_ALLOW_NULL |
++            BSON_VALIDATE_EMPTY_KEYS))};
++    //GAL,ELF:END Allow "." (dots) in keys
++
+     bson_error_t error = {};
+ 
+     if (!libmongoc::bulk_operation_update_one_with_opts(

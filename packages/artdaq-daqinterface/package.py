@@ -46,7 +46,7 @@ class ArtdaqDaqinterface(CMakePackage):
     version("v3_12_03", commit="cd909f5c12191d63f2894287a67a2fd8c5854945")
     version("v3_12_02", commit="d3f787e238ab5c17a84a14465aa997e3eb3f4268")
 
-    depends_on("cetmodules@3.26.00:", type="build")
+    depends_on("cetmodules@3.24.01:", type="build")
     depends_on("python@3:")
 
     def setup_run_environment(self, env):
@@ -62,3 +62,4 @@ class ArtdaqDaqinterface(CMakePackage):
     patch("patch/v3_13_00.path", when="@v3_13_00")
     patch("patch/v3_14_00a.path", when="@v3_14_00")
     patch("patch/v4_05_00.path", when="@v4_05_00")
+    patch("patch/v4_06_00.path", when="@v4_06_00")

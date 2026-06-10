@@ -28,7 +28,7 @@ class Trace(CMakePackage):
 
     parallel = False
 
-    depends_on("cetmodules@3.26.00:", type="build")
+    depends_on("cetmodules@3.24.01:", type="build")
 
     version("develop", branch="develop", get_full_repo=True)
     version("v3_24_00", commit="6add133be9b6b1dbdbca92c4d1f8eda7066e6ca8")

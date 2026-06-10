@@ -16,6 +16,14 @@ class MongoCxxDriver(CMakePackage):
     license("Apache-2.0")
 
     version(
+        "4.3.1",
+        sha256="39cbb5010b27eb00b4e947ad5e7d368acd966cd773834a10923d4f008f85b0a2",
+    )
+    version(
+        "3.11.1",
+        sha256="63fdd7ff55e419990d228130c6f0485b50a0e15ecef86087e14c0123344f3c88",
+    )
+    version(
         "3.10.1",
         sha256="0297d9d1a513f09438cc05254b14baa49edd1fa64a6ce5d7a80a1eb7677cf2be",
     )
@@ -99,6 +107,8 @@ class MongoCxxDriver(CMakePackage):
     depends_on("cxx", type="build")  # generated
 
     depends_on("mongo-c-driver@1.9.2:")
+    depends_on("mongo-c-driver@1.29.0", when="@3.11")
+    depends_on("mongo-c-driver@2.3.0", when="@4.3")
 
     variant(
         "dots_in_keys",
@@ -106,7 +116,8 @@ class MongoCxxDriver(CMakePackage):
         description="Enable support for dots in key names",
     )
     with when("+dots_in_keys"):
-        patch("mongocxx-r3101.patch", when="@3.10.0:")
+        patch("mongocxx-r431.patch", when="@4:")
+        patch("mongocxx-r3101.patch", when="@3.10.0:3.11.1")
         patch("mongocxx-r380.patch", when="@3.8.0")
         patch("mongocxx-r366.patch", when="@3.6.6:3.7.0")
         patch("mongocxx-r363.patch", when="@3.6.3:3.6.5")

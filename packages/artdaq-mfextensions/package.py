@@ -77,7 +77,7 @@ class ArtdaqMfextensions(CMakePackage):
         description="Build the SMTP destination, which depends on libcurl",
     )
 
-    depends_on("cetmodules@3.26.00:", type="build")
+    depends_on("cetmodules@3.24.01:", type="build")
     depends_on("qt@5.15:+gui")
     depends_on("librdkafka", when="+kafka")
     depends_on("curl", when="+curl")
