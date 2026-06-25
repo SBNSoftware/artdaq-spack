@@ -32,3 +32,26 @@
  create_python_addon ( ADDON_NAME "conftoolp"
  					  LIBRARIES
  					  artdaq-database::ConfigurationDB)
+
+--- a/artdaq-database/StorageProviders/FileSystemDB/provider_filedb_readwrite.cpp
++++ b/artdaq-database/StorageProviders/FileSystemDB/provider_filedb_readwrite.cpp
+@@ -157,7 +157,7 @@ object_id_t StorageProvider<JSONDocument, FileSystemDB>::writeDocument(JSONDocum
+ 
+       auto entity_value = std::string{};
+       try {
+-        auto entities_doc = user_document.findChildDocument(jsonliteral::entities);
++        auto entities_doc = user_document.findChild(jsonliteral::entities);
+         auto entity_item = JSONDocument::value_at(entities_doc, 0);
+         auto entity_json = JSONDocument{entity_item};
+         entity_value = entity_json.findChild(jsonliteral::name).value();
+--- a/artdaq-database/StorageProviders/MongoDB/provider_mongodb_readwrite.cpp
++++ b/artdaq-database/StorageProviders/MongoDB/provider_mongodb_readwrite.cpp
+@@ -141,7 +141,7 @@ object_id_t StorageProvider<JSONDocument, MongoDB>::writeDocument(JSONDocument c
+ 
+       auto entity_value = std::string{};
+       try {
+-        auto entities_doc = user_document.findChildDocument(jsonliteral::entities);
++        auto entities_doc = user_document.findChild(jsonliteral::entities);
+         auto entity_item = JSONDocument::value_at(entities_doc, 0);
+         auto entity_json = JSONDocument{entity_item};
+         entity_value = entity_json.findChild(jsonliteral::name).value();
