@@ -64,3 +64,4 @@ class ArtdaqDaqinterface(CMakePackage):
     patch("patch/v3_14_00a.path", when="@v3_14_00")
     patch("patch/v4_05_00.path", when="@v4_05_00")
     patch("patch/v4_06_00.path", when="@v4_06_00")
+    patch("patch/v4_06_01.path", when="@v4_06_01")
